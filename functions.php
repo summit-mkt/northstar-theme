@@ -34,3 +34,9 @@ function hello_elementor_child_scripts_styles() {
 
 }
 add_action( 'wp_enqueue_scripts', 'hello_elementor_child_scripts_styles', 20 );
+
+// Create shortcode [last_day_of_month]
+function last_day_of_month_shortcode() {
+    return date('F jS, Y', strtotime('last day of this month'));
+}
+add_shortcode('last_day_of_month', 'last_day_of_month_shortcode');

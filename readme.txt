@@ -1,4 +1,4 @@
-=== Hello Elementor Child ===
+=== Northstar Theme ===
 
 Contributors: elemntor
 Requires at least: 5.9
@@ -10,11 +10,11 @@ License: GNU General Public License v3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Tags: flexible-header, custom-colors, custom-menu, custom-logo, editor-style, featured-images, rtl-language-support, threaded-comments, translation-ready
 
-The Hello Elementor Child Theme is a starter blank child theme for [Hello Elementor](https://wordpress.org/themes/hello-elementor/) theme.
+The Northstar Theme is a custom child theme for [Hello Elementor](https://wordpress.org/themes/hello-elementor/) theme.
 
 == Description ==
 
-Hello Elementor Child is a lightweight and minimalist WordPress theme that was built specifically to work seamlessly with the Elementor page builder plugin. The theme is free, open-source, and designed for users who want a flexible, easy-to-use, and customizable website.
+Northstar Theme is a lightweight and minimalist WordPress theme that was built specifically to work seamlessly with the Elementor page builder plugin. The theme is free, open-source, and designed for users who want a flexible, easy-to-use, and customizable website.
 
 The theme's main focus is on providing a solid foundation for users to build their own unique designs using the Elementor drag-and-drop site builder. It is optimized for speed and performance, and its simplicity and flexibility make it a great choice for both beginners and experienced website designers.
 
@@ -29,7 +29,7 @@ The theme supports common WordPress features which can be extended using a child
 
 == Copyright ==
 
-This theme, like WordPress, is distributed under the terms of GPL.
+This theme is owned by Summit Marketing.
 Use it as your springboard to building a site with ***Elementor***.
 
 Hello Elementor bundles the following third-party resources:

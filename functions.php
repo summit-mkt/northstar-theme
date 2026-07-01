@@ -40,3 +40,10 @@ function last_day_of_month_shortcode() {
     return date('F jS, Y', strtotime('last day of this month'));
 }
 add_shortcode('last_day_of_month', 'last_day_of_month_shortcode');
+
+// Create shortcode [current_year]
+function current_year_shortcode() {
+    return date('Y');
+}
+add_shortcode('current_year', 'current_year_shortcode');
+

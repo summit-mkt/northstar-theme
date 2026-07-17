@@ -47,3 +47,10 @@ function current_year_shortcode() {
 }
 add_shortcode('current_year', 'current_year_shortcode');
 
+function ns_meta_tags() {
+    ?>
+    <meta name="robots" content="noindex">
+    <?php
+}
+add_action('wp_head', 'ns_meta_tags');
+

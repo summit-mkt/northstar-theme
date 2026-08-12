@@ -35,6 +35,12 @@ function hello_elementor_child_scripts_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'hello_elementor_child_scripts_styles', 20 );
 
+// ACF custom fields
+// require_once get_template_directory() . '/includes/acf-fields.php';
+
+// Block xmlrpc
+add_filter('xmlrpc_enabled', '__return_false');
+
 // Create shortcode [last_day_of_month]
 function last_day_of_month_shortcode() {
     return date('F jS, Y', strtotime('last day of this month'));
@@ -47,6 +53,7 @@ function current_year_shortcode() {
 }
 add_shortcode('current_year', 'current_year_shortcode');
 
+// Robots noindex
 function ns_meta_tags() {
     ?>
     <meta name="robots" content="noindex">

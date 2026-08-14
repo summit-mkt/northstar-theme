@@ -53,6 +53,17 @@ function current_year_shortcode() {
 }
 add_shortcode('current_year', 'current_year_shortcode');
 
+// Create shortcode [current_year]
+function thankyou_shortcode() {
+	$thankyou = "A member of our team will contact you shortly.";
+
+	if ((strpos(home_url(), 'seminar') !== false) || (strpos(home_url(), 'flsteversonhamlinhilbish') !== false)) {
+        $thankyou = "Your Spot At Our Seminar Has Been Reserved.";
+    }
+    return $thankyou;
+}
+add_shortcode('thankyou', 'thankyou_shortcode');
+
 // Robots noindex
 function ns_meta_tags() {
     ?>

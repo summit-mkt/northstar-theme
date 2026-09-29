@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Footer Only Layout
+ * Template Name: Elementor Footer Only
  *
  * @package HelloElementorChild
  */

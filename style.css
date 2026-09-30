@@ -4,12 +4,75 @@ Theme URI: https://github.com/summit-mkt/northstar-theme
 Description: Northstar Theme is a child theme of Hello Elementor, created by Summit Marketing team
 Author: Summit Marketing Team
 Template: hello-elementor
-Version: 2.0.0
+Version: 2.0.1
 Text Domain: hello-elementor-child
 License: GNU General Public License v3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Tags: flexible-header, custom-colors, custom-menu, custom-logo, editor-style, featured-images, rtl-language-support, threaded-comments, translation-ready
 */
+
+
+/* CSS Reset */
+
+#root {
+  isolation: isolate;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+body {
+  line-height: 1.5;
+}
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.1;
+}
+
+/* Prevents long URLs or unbreakable strings from blowing out their container. */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* Smarter line-breaking:
+   'pretty' avoids widows (lone words on the last line of a paragraph).
+   'balance' distributes heading text more evenly across lines. 
+   Harmless in browsers that don't support them. */
+p {
+  text-wrap: pretty;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/* Headings carry semantic meaning, not visual weight.
+   h1–h6 sizing and boldness should come from your design system. */
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+img, picture, video, canvas, svg, embed, iframe, object, audio {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+}
+
+svg[width][height] {
+  max-width: revert;
+}
+
 
 :root {
 	--txt-size__h-lg: clamp(1.8rem, 0.6426rem + 4.3573vw, 3.7472rem);

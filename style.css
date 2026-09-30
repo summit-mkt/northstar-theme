@@ -11,4 +11,11 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Tags: flexible-header, custom-colors, custom-menu, custom-logo, editor-style, featured-images, rtl-language-support, threaded-comments, translation-ready
 */
 
-/* Add your custom styles here */
+:root {
+	--txt-size__h-lg: clamp(1.8rem, 0.6426rem + 4.3573vw, 3.7472rem);
+	--txt-size__h-md: clamp(1.5rem, 0.9067rem + 2.2336vw, 2.4981rem);
+	--txt-size__h-sm: clamp(1.0417rem, 1.0009rem + 0.1535vw, 1.1103rem);
+	--txt-size__h-xs: clamp(1.1103rem, 1.4216rem + -0.437vw, 1.3056rem);
+
+    --txt-size__base: 1rem;
+}

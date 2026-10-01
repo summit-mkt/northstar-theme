@@ -1,762 +1,624 @@
-# Hero Section
+# 02 — Offer Section
 
-**Component:** `hero`
-**Version:** 1.1
-**Status:** Draft
-**Last Updated:** 2026-09-30
+## 01 — Purpose
 
----
+The Offer section presents the primary offer information, supporting details, imagery, and call to action.
 
-# 01 — Purpose
-
-## Overview
-
-The Hero is the primary introductory and conversion section of the landing page.
-
-It combines:
-
-* Brand identity
-* Demographic targeting
-* Seasonal content
-* Primary messaging
-* CTA/form
-* Hero imagery
-
-The Hero uses **ACF for structured brand data**, **Theme/PHP for shared variables and dynamic content**, **Elementor for page presentation**, and **Global variables for reusable design values**.
-
-## Primary Goal
-
-Clearly communicate the landing page's primary message while presenting the appropriate brand, demographic, seasonal, and conversion content.
-
-## Used On
-
-* PPG
-* Promo
-* Seminar
+The component is reusable across landing-page types and supports a configurable content order through the ACF `Direction` switch.
 
 ---
 
 # 02 — Component Structure
 
 ```text
-hero
-├── hero__container
-│
-├── hero__content
-│   ├── hero__logo
-│   ├── hero__header
-│   └── hero__cta
-│       ├── hero__subtitle
-│       └── hero__form
-│
-└── hero__media
-    └── hero__video
+offer
+└── offer__container
+    ├── offer__header
+    │
+    ├── offer__grid
+    │   └── offer__item
+    │
+    ├── offer__text
+    └── offer__cta
 ```
-
-## Structure Notes
-
-| Element           | Purpose                 |
-| ----------------- | ----------------------- |
-| `hero`            | Root Hero component     |
-| `hero__container` | Main Hero layout        |
-| `hero__content`   | Primary content area    |
-| `hero__logo`      | Brand logo              |
-| `hero__header`    | Primary Hero messaging  |
-| `hero__cta`       | Primary conversion area |
-| `hero__subtitle`  | Supporting CTA content  |
-| `hero__form`      | Conversion form         |
-| `hero__media`     | Hero media area         |
-| `hero__video`     | Hero video/media        |
 
 ---
 
 # 03 — Class Names
 
-| Element   | Class             |
-| --------- | ----------------- |
-| Section   | `hero`            |
-| Container | `hero__container` |
-| Content   | `hero__content`   |
-| Logo      | `hero__logo`      |
-| Header    | `hero__header`    |
-| CTA       | `hero__cta`       |
-| Subtitle  | `hero__subtitle`  |
-| Form      | `hero__form`      |
-| Media     | `hero__media`     |
-| Video     | `hero__video`     |
+| Element   | Class              |
+| --------- | ------------------ |
+| Section   | `offer`            |
+| Container | `offer__container` |
+| Header    | `offer__header`    |
+| Grid      | `offer__grid`      |
+| Item      | `offer__item`      |
+| Text      | `offer__text`      |
+| CTA       | `offer__cta`       |
+
+### Modifier
+
+```text
+offer--reverse
+```
+
+The `offer--reverse` modifier changes the visual order of the Offer content.
 
 ---
 
 # 04 — ACF Configuration
 
-The Hero uses the **Brand** ACF field group for brand-level information.
+The Offer uses the **Page** ACF field group for page-level Offer information.
 
 ## ACF Field Group
 
 ```text
-Brand
+Page
 ```
 
 ## Fields
 
-| Field         | Type      | Purpose                                 |
-| ------------- | --------- | --------------------------------------- |
-| Logo          | Image     | Hero/brand logo                         |
-| Demographics  | PHP       | Determines demographic-specific content |
-| Seasonal      | PHP       | Determines seasonal-specific content    |
-| Primary Color | Color     | Primary brand color                     |
-| Secondary     | Color     | Secondary brand color                   |
-| Text          | Static    | Static brand text                       |
-| Accent        | Color     | Accent color and border treatment       |
+| Field     | Type             | Purpose                                         |
+| --------- | ---------------- | ----------------------------------------------- |
+| Title     | Text             | Primary heading for the Offer section.          |
+| Subtitle  | Text             | Supporting heading or introductory Offer text.  |
+| Direction | True / False     | Controls the visual order of the Offer content. |
+| Address   | Text             | Physical address associated with the Offer.     |
+| Datetime  | Date Time Picker | Date and time associated with the Offer.        |
+| Image 1   | Image            | Primary Offer image.                            |
+| Image 2   | Image            | Secondary Offer image.                          |
 
-### ACF Structure
+## Direction
+
+`Direction` is a **True / False** field used as a content-order switch.
+
+### Default
 
 ```text
-ACF
-└── Brand
-    ├── Logo
-    │   └── hero_logo
-    ├── Demographics
-    │   └── PHP
-    ├── Seasonal
-    │   └── PHP
-    ├── Primary Color
-    ├── Secondary
-    ├── Text
-    │   └── Static
-    └── Accent
-        └── Border
+Direction = Off
 ```
 
-## ACF Responsibility
+```text
+Content → Media
+```
 
-ACF provides the structured brand information.
+### Reverse
 
-The Hero should retrieve this information rather than hardcoding brand-specific values into the component.
+```text
+Direction = On
+```
+
+```text
+Media → Content
+```
+
+When enabled, PHP applies:
+
+```text
+offer--reverse
+```
+
+Result:
+
+```text
+offer offer--reverse
+```
+
+The HTML structure remains unchanged. CSS controls the visual order.
 
 ---
 
-# 05 — Theme / PHP Configuration
+# 05 — Theme/PHP Configuration
 
-The Theme/PHP layer provides the shared variables and dynamic values required by the Hero.
+The Theme/PHP layer retrieves the ACF data and prepares it for the Offer component.
 
-## Theme/PHP Variables
+## Responsibilities
 
-```text
-Theme/PHP
-├── --text-p
-├── --text-h1
-├── --text-h2
-├── --space-m
-├── --hero-image
-├── --demo-img
-└── --season-img
-```
+* Retrieve Offer ACF fields
+* Handle optional fields
+* Format the date/time
+* Retrieve image data
+* Determine the Direction value
+* Apply `offer--reverse`
+* Maintain the Offer HTML structure
 
-## Variable Definitions
-
-| Variable       | Purpose                             |
-| -------------- | ----------------------------------- |
-| `--text-p`     | Primary paragraph/body text styling |
-| `--text-h1`    | Primary Hero heading styling        |
-| `--text-h2`    | Secondary heading styling           |
-| `--space-m`    | Standard medium spacing             |
-| `--hero-image` | Hero image/media value              |
-| `--demo-img`   | Demographic-specific image          |
-| `--season-img` | Seasonal-specific image             |
-
-## PHP Responsibilities
-
-PHP determines and outputs the appropriate dynamic values.
-
-Examples include:
+## Direction Logic
 
 ```text
-Brand
- ↓
-ACF
- ↓
-PHP
- ↓
-Dynamic Variables
- ↓
-Hero
-```
-
-### Demographic
-
-The demographic value is determined through PHP and can be used to select the appropriate demographic-specific content or image.
-
-```text
-Demographics
+ACF Direction
       ↓
-     PHP
-      ↓
---demo-img
-```
-
-### Seasonal
-
-The seasonal value is determined through PHP and can be used to select the appropriate seasonal-specific content or image.
-
-```text
-Seasonal
-    ↓
    PHP
-    ↓
---season-img
+      ↓
+Direction = Off
+      ↓
+offer
+
+Direction = On
+      ↓
+offer offer--reverse
 ```
 
-### Hero Image
-
-The Hero image value is provided through the Theme/PHP layer:
-
-```text
---hero-image
-```
+PHP controls the state; CSS controls the visual result.
 
 ---
 
 # 06 — Elementor Configuration
 
-Elementor controls the visual presentation of the Hero.
+Elementor controls the visual presentation and page-specific configuration.
 
-## Elementor IDs
-
-The Hero uses the following Elementor IDs:
+## Elementor ID
 
 ```text
-#hero__container
-#hero__logo
-#hero__cta
-#hero__content
+#offer
 ```
 
-### Elementor Structure
+## Elementor Elements
 
 ```text
-hero
-└── #hero__container
-    ├── #hero__content
-    │   ├── #hero__logo
-    │   ├── hero__header
-    │   └── #hero__cta
-    │       ├── hero__subtitle
-    │       └── hero__form
-    │
-    └── hero__media
-        └── hero__video
+#offer__container
+#offer__header
+#offer__grid
+#offer__item
+#offer__text
+#offer__cta
 ```
 
 ## Elementor Responsibilities
 
-Elementor controls:
+* Component placement
+* Visual presentation
+* Grid configuration
+* Responsive adjustments
+* Page-specific styling
+* CTA presentation
 
-* Visual layout
-* Content placement
-* CTA positioning
-* Form placement
-* Responsive presentation
-* Page-specific visual adjustments
-* Media presentation
-
-## Elementor IDs vs CSS Classes
-
-The Elementor IDs above identify the specific Elementor elements.
-
-The component classes define the reusable architecture.
-
-```text
-Elementor ID
-    ↓
-Specific Elementor element
-
-CSS Class
-    ↓
-Reusable component architecture
-```
-
-Example:
-
-```text
-ID:
-#hero__container
-
-Class:
-.hero__container
-```
-
-The ID should not replace the component class.
+Elementor IDs are separate from the BEM class naming system.
 
 ---
 
 # 07 — Global Variables
 
-The Hero uses the global design system for reusable styling values.
-
-## Global Variables
+The Offer component uses the project's global design system.
 
 ```text
 GLOBAL
-├── text-color-primary
-├── bg-color-primary
-└── bor-rad-m
+├── Flex
+├── Grid
+├── Color
+└── Sizes
+    ├── Spacing
+    └── Border-Radius
 ```
 
-## Variable Definitions
+The component should use existing global variables rather than creating duplicate values.
 
-| Variable             | Purpose                  |
-| -------------------- | ------------------------ |
-| `text-color-primary` | Primary text color       |
-| `bg-color-primary`   | Primary background color |
-| `bor-rad-m`          | Medium border radius     |
+### Global Variables Used
 
-These values should be defined once within the global design system and reused by components.
+* Primary text color
+* Primary background color
+* Typography variables
+* Spacing variables
+* Border-radius variables
+* Grid variables
+* Flex variables
 
 ---
 
 # 08 — Variable Responsibility
 
-The Hero follows a clear separation between variable sources.
+| Variable / Data             | Responsibility |
+| --------------------------- | -------------- |
+| Title                       | ACF            |
+| Subtitle                    | ACF            |
+| Direction                   | ACF            |
+| Address                     | ACF            |
+| Datetime                    | ACF            |
+| Image 1                     | ACF            |
+| Image 2                     | ACF            |
+| Content retrieval           | PHP            |
+| `offer--reverse`            | PHP            |
+| Component CSS               | Theme          |
+| Global design variables     | Theme          |
+| Page presentation           | Elementor      |
+| Responsive page adjustments | Elementor      |
 
-```text
-ACF
-│
-├── Brand Logo
-├── Primary Color
-├── Secondary
-├── Text
-└── Accent
-       │
-       ▼
-     PHP
-       │
-       ├── Demographics
-       ├── Seasonal
-       ├── Hero Image
-       ├── Demo Image
-       └── Season Image
-       │
-       ▼
-    Elementor
-       │
-       └── Visual Presentation
-```
+### Architecture Rule
 
-Global design values remain separate:
+**ACF = structured data**
 
-```text
-GLOBAL
-│
-├── text-color-primary
-├── bg-color-primary
-└── bor-rad-m
-```
+**PHP = data retrieval and component logic**
+
+**Theme CSS = universal component styling**
+
+**Elementor = page presentation**
 
 ---
 
 # 09 — CSS Requirements
 
-## Theme/PHP Variables
+The Offer component requires universal theme CSS for its reusable structure.
 
-The Theme/PHP layer establishes the Hero's shared variables:
+## Base Classes
 
-```css
---text-p
---text-h1
---text-h2
---space-m
---hero-image
---demo-img
---season-img
+```text
+.offer
+.offer__container
+.offer__header
+.offer__grid
+.offer__item
+.offer__text
+.offer__cta
 ```
 
-## Global Variables
+## Modifier
 
-The Hero can consume:
-
-```css
-text-color-primary
-bg-color-primary
-bor-rad-m
+```text
+.offer--reverse
 ```
 
-## CSS Responsibility
+### CSS Responsibilities
 
-### Theme
+* Offer layout
+* Grid behavior
+* Content ordering
+* Spacing
+* Typography foundation
+* Image behavior
+* CTA structure
+* Responsive behavior
+* Border radius
 
-The theme provides:
+The theme should provide the reusable Offer styling.
 
-* Root variables
-* CSS reset
-* Universal design foundation
-* Dynamic PHP values
-* Shared component foundations
-
-### Elementor
-
-Elementor provides:
-
-* Visual layout
-* Page-specific styling
-* Widget styling
-* Responsive presentation
-
-The Hero should not create duplicate global variables when an existing global variable already provides the required value.
+Page-specific styling remains within Elementor.
 
 ---
 
 # 10 — Responsive Behavior
 
-The Hero follows the project-wide responsive standard:
+The Offer follows the standard project responsive structure:
 
 ```text
 Desktop
-    ↓
+   ↓
 Tablet
-    ↓
+   ↓
 Mobile
 ```
 
 ## Desktop
 
+Default:
+
 ```text
 Content | Media
 ```
 
-The content and Hero media occupy their respective areas.
+Reverse:
+
+```text
+Media | Content
+```
 
 ## Tablet
 
-The two-area layout is adjusted as needed based on available space.
-
-Spacing and typography may scale using the established variables.
+The component adapts to the available width while maintaining the selected content order.
 
 ## Mobile
 
+The content stacks vertically.
+
+Default:
+
 ```text
 Content
-    ↓
 Media
 ```
 
-The Hero content should simply stack above the media.
-
-## Responsive Variables
-
-The following values may be used to support responsive presentation:
+Reverse:
 
 ```text
---text-p
---text-h1
---text-h2
---space-m
+Media
+Content
+```
+
+The `Direction` setting controls the intended order across responsive layouts.
+
+---
+
+# 11 — Content/Data Flow
+
+```text
+ACF
+ │
+ ├── Title
+ ├── Subtitle
+ ├── Direction
+ ├── Address
+ ├── Datetime
+ ├── Image 1
+ └── Image 2
+ │
+ ↓
+PHP / Theme
+ │
+ ├── Retrieve data
+ ├── Format data
+ ├── Check optional fields
+ └── Apply offer--reverse
+ │
+ ↓
+Offer Component
+ │
+ ├── offer__header
+ ├── offer__grid
+ ├── offer__item
+ ├── offer__text
+ └── offer__cta
+ │
+ ↓
+Elementor
+ │
+ └── Page Presentation
 ```
 
 ---
 
-# 11 — Content / Data Flow
+# 12 — PHP/Template Behavior
 
-The Hero follows this general data flow:
+The Offer template should:
 
-```text
-ACF Brand
-    │
-    ├── hero_logo
-    ├── Primary Color
-    ├── Secondary
-    ├── Text
-    └── Accent
-         │
-         ▼
-       PHP
-         │
-         ├── Demographics
-         ├── Seasonal
-         ├── Hero Image
-         ├── Demo Image
-         └── Season Image
-         │
-         ▼
-      Hero Component
-         │
-         ▼
-      Elementor
-         │
-         ▼
-   Visual Presentation
+1. Retrieve the Page ACF fields.
+2. Check optional fields.
+3. Retrieve the Direction value.
+4. Apply `offer--reverse` when enabled.
+5. Output only populated content.
+6. Maintain the same HTML structure.
+7. Provide appropriate image attributes.
+8. Allow Elementor to control presentation.
+
+### Direction Example
+
+```php
+$direction = get_field('direction');
+
+$offer_class = 'offer';
+
+if ($direction) {
+    $offer_class .= ' offer--reverse';
+}
 ```
 
-Global design values are available independently:
+Output:
 
-```text
-Global
-├── text-color-primary
-├── bg-color-primary
-└── bor-rad-m
+```html
+<section class="offer">
 ```
 
----
+or:
 
-# 12 — PHP / Template Behavior
-
-## Component Location
-
-```text
-/components/hero/
+```html
+<section class="offer offer--reverse">
 ```
-
-## Expected Structure
-
-```text
-hero/
-├── hero.php
-├── hero.css
-└── hero.js
-```
-
-The exact PHP implementation will be defined in the PHP implementation documentation.
-
-## PHP Responsibilities
-
-* Retrieve Brand ACF data
-* Determine demographic data
-* Determine seasonal data
-* Determine appropriate Hero imagery
-* Output dynamic values
-* Render optional content
-* Maintain the Hero component structure
-
-PHP should not control the visual page layout that belongs to Elementor.
 
 ---
 
 # 13 — JavaScript
 
-## Required JavaScript
+The Offer component does not require JavaScript for its core functionality.
 
-**Status:** To Be Determined
+```text
+JavaScript
+└── Not required
+```
 
-The Hero should not include custom JavaScript unless required for a specific interaction.
+The Direction functionality is handled through:
 
-Potential functionality may include:
+```text
+ACF → PHP → CSS
+```
 
-* Video behavior
-* Form behavior
-* CTA interaction
-* Tracking
-* Animation
-
-Global functionality should remain outside the Hero component.
+JavaScript should only be introduced if a future Offer interaction requires it.
 
 ---
 
 # 14 — Accessibility
 
-The Hero must maintain:
+The Offer component should follow standard accessibility practices.
 
-* Proper heading hierarchy
-* Accessible logo/image handling
-* Accessible form labels
-* Keyboard navigation
-* Visible focus states
-* Appropriate color contrast
-* Accessible video controls where applicable
+### Headings
 
-The primary Hero heading should normally be the page's H1.
+* Maintain a logical heading hierarchy.
+* Do not skip heading levels for visual styling.
+
+### Images
+
+* Provide meaningful alt text for content images.
+* Use empty alt attributes for decorative images when appropriate.
+
+### CTA
+
+* Use descriptive CTA text.
+* Ensure links/buttons are keyboard accessible.
+* Maintain visible focus states.
+
+### Content
+
+* Address information should remain readable.
+* Date/time information should be presented in a human-readable format.
 
 ---
 
 # 15 — SEO
 
-## Primary Heading
+The Offer component should use semantic and meaningful content.
 
-The Hero should normally contain the page's primary H1.
+### Requirements
 
-```html
-<h1>Primary Page Heading</h1>
-```
+* Use the appropriate heading level.
+* Keep important Offer content as HTML text.
+* Use descriptive image alt text.
+* Keep address and date/time information indexable.
+* Avoid placing important content exclusively inside images.
 
-## Content
-
-Important page information should exist as accessible text rather than being contained only within an image or video.
-
-## Media
-
-Hero media should support, rather than replace, the page's primary textual content.
+The Offer component should not create unnecessary duplicate content or metadata.
 
 ---
 
 # 16 — Variations
 
-Hero variations may use modifiers where required.
-
-Examples:
+## Default Offer
 
 ```text
-hero--dark
-hero--light
-hero--split
+offer
 ```
 
-Modifiers should only be introduced when a genuine component variation exists.
+Content order:
 
-Brand, demographic, and seasonal differences should primarily be handled through the appropriate ACF/PHP data rather than creating separate Hero components.
+```text
+Content → Media
+```
+
+## Reverse Offer
+
+```text
+offer offer--reverse
+```
+
+Content order:
+
+```text
+Media → Content
+```
+
+The variation is controlled through the ACF `Direction` field.
+
+No separate template is required.
 
 ---
 
 # 17 — Dependencies
 
-## ACF
+The Offer component depends on:
 
-```text
-Brand
-├── hero_logo
-├── Demographics
-├── Seasonal
-├── Primary Color
-├── Secondary
-├── Text
-└── Accent
-```
+### WordPress
 
-## Theme/PHP
+* Page/template system
+* Media handling
+* Content management
 
-```text
---text-p
---text-h1
---text-h2
---space-m
---hero-image
---demo-img
---season-img
-```
+### ACF
 
-## Elementor
+* Page field group
+* Offer fields
+* Direction switch
 
-```text
-#hero__container
-#hero__logo
-#hero__cta
-#hero__content
-```
+### Theme
 
-## Global
+* PHP/template structure
+* Component architecture
+* Universal CSS
+* Global design variables
 
-```text
-text-color-primary
-bg-color-primary
-bor-rad-m
-```
+### Elementor Pro
+
+* Page presentation
+* Visual editing
+* Responsive adjustments
+* Page-specific styling
 
 ---
 
 # 18 — QA Checklist
 
-## Structure
+### Structure
 
-* [ ] `hero` component exists
-* [ ] `hero__container` exists
-* [ ] `hero__content` exists
-* [ ] `hero__logo` exists
-* [ ] `hero__header` exists
-* [ ] `hero__cta` exists
-* [ ] `hero__subtitle` exists
-* [ ] `hero__form` exists
-* [ ] `hero__media` exists
-* [ ] `hero__video` exists
+* [ ] `offer` exists
+* [ ] `offer__container` exists
+* [ ] `offer__header` exists
+* [ ] `offer__grid` exists
+* [ ] `offer__item` exists
+* [ ] `offer__text` exists
+* [ ] `offer__cta` exists
 
-## ACF
+### ACF
 
-* [ ] Brand field group available
-* [ ] `hero_logo` available
-* [ ] Primary Color available
-* [ ] Secondary available
-* [ ] Text available
-* [ ] Accent available
-* [ ] Demographic PHP logic verified
-* [ ] Seasonal PHP logic verified
+* [ ] Page field group configured
+* [ ] Title configured as Text
+* [ ] Subtitle configured as Text
+* [ ] Direction configured as True / False
+* [ ] Address configured as Text
+* [ ] Datetime configured as Date Time Picker
+* [ ] Image 1 configured as Image
+* [ ] Image 2 configured as Image
 
-## Theme/PHP
+### Direction
 
-* [ ] `--text-p` available
-* [ ] `--text-h1` available
-* [ ] `--text-h2` available
-* [ ] `--space-m` available
-* [ ] `--hero-image` available
-* [ ] `--demo-img` available
-* [ ] `--season-img` available
+* [ ] Default Direction is Off
+* [ ] Default content order works
+* [ ] Direction On applies `offer--reverse`
+* [ ] Reverse content order works
+* [ ] Mobile preserves the intended order
 
-## Elementor
-
-* [ ] `#hero__container`
-* [ ] `#hero__logo`
-* [ ] `#hero__cta`
-* [ ] `#hero__content`
-
-## Global
-
-* [ ] `text-color-primary`
-* [ ] `bg-color-primary`
-* [ ] `bor-rad-m`
-
-## Responsive
+### Responsive
 
 * [ ] Desktop verified
 * [ ] Tablet verified
 * [ ] Mobile verified
-* [ ] Content stacks correctly on mobile
-* [ ] Hero media remains responsive
+* [ ] Content stacks correctly
 * [ ] No horizontal overflow
+
+### Elementor
+
+* [ ] `#offer` ID configured
+* [ ] Elementor presentation verified
+* [ ] Responsive settings do not conflict with theme CSS
 
 ---
 
 # 19 — Component Summary
 
 ```text
-HERO
+OFFER
+│
+├── Component
+│   └── offer
 │
 ├── ACF
-│   └── Brand
-│       ├── hero_logo
-│       ├── Demographics → PHP
-│       ├── Seasonal → PHP
-│       ├── Primary Color
-│       ├── Secondary
-│       ├── Text → Static
-│       └── Accent → Border
+│   └── Page
+│       ├── Title
+│       ├── Subtitle
+│       ├── Direction
+│       ├── Address
+│       ├── Datetime
+│       ├── Image 1
+│       └── Image 2
 │
-├── THEME / PHP
-│   ├── --text-p
-│   ├── --text-h1
-│   ├── --text-h2
-│   ├── --space-m
-│   ├── --hero-image
-│   ├── --demo-img
-│   └── --season-img
+├── Theme/PHP
+│   ├── Data retrieval
+│   ├── Date formatting
+│   └── Direction logic
 │
-├── ELEMENTOR
-│   ├── #hero__container
-│   ├── #hero__logo
-│   ├── #hero__cta
-│   └── #hero__content
+├── Elementor
+│   └── #offer
 │
-└── GLOBAL
-    ├── text-color-primary
-    ├── bg-color-primary
-    └── bor-rad-m
+├── CSS
+│   ├── Component styles
+│   └── offer--reverse
+│
+└── Responsive
+    └── Desktop → Tablet → Mobile
 ```
 
 ---
 
 # 20 — Change Log
 
-| Version | Date       | Change                                                            | Author |
-| ------- | ---------- | ----------------------------------------------------------------- | ------ |
-| 1.0     | 2026-09-30 | Initial Hero documentation                                        | Cindy H |
-| 1.1     | 2026-09-30 | Added ACF, Theme/PHP, Elementor, and Global variable architecture | Cindy H |
-
-```
-
-This version makes the **source of each value explicit**, which will be especially useful when we document the other sections. One thing we should preserve consistently going forward is the distinction between **ACF data**, **PHP-generated values**, **Elementor IDs**, and **global design variables**.
-```
+| Version | Change                                             |
+| ------- | -------------------------------------------------- |
+| 1.0     | Initial Offer component documentation              |
+| 1.0     | Added complete ACF field configuration             |
+| 1.0     | Changed Direction to True / False                  |
+| 1.0     | Defined Direction as content-order control         |
+| 1.0     | Added `offer--reverse` modifier                    |
+| 1.0     | Standardized structure to match Hero documentation |

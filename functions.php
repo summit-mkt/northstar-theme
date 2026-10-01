@@ -35,36 +35,10 @@ function hello_elementor_child_scripts_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'hello_elementor_child_scripts_styles', 20 );
 
-// ACF custom fields
-// require_once get_template_directory() . '/includes/acf-fields.php';
 
-// Block xmlrpc
-// add_filter('xmlrpc_enabled', '__return_false');
-
-// Create shortcode [last_day_of_month]
-function last_day_of_month_shortcode() {
-    return date('F jS, Y', strtotime('last day of this month'));
-}
-add_shortcode('last_day_of_month', 'last_day_of_month_shortcode');
-
-// Create shortcode [current_year]
-function current_year_shortcode() {
-    return date('Y');
-}
-add_shortcode('current_year', 'current_year_shortcode');
-
-// Create shortcode [thankyou]
-function thankyou_shortcode() {
-	$thankyou = "A member of our team will contact you shortly.";
-
-	if ((strpos(home_url(), 'seminar') !== false) || (strpos(home_url(), 'flsteversonhamlinhilbish') !== false)) {
-        $thankyou = "Your Spot At Our Seminar Has Been Reserved.";
-    }
-    return $thankyou;
-}
-add_shortcode('thankyou', 'thankyou_shortcode');
-
-// Robots noindex
+/**
+ * Add custom meta tags to <head>.
+ */
 function ns_meta_tags() {
     ?>
     <meta name="robots" content="noindex">
@@ -72,22 +46,6 @@ function ns_meta_tags() {
 }
 add_action('wp_head', 'ns_meta_tags');
 
-// Create shortcode [location_years]
-function location_years_shortcode() {
-	$established = get_field('brand_established', 'option');
-	$years = date('Y')-$established;
-    return $years;
-}
-add_shortcode('location_years', 'location_years_shortcode');
-
-// Create shortcode [location_name]
-function location_name_shortcode() {
-    return get_field('option_location_name', 'option');
-}
-add_shortcode('location_name', 'location_name_shortcode');
-
-// Create shortcode [brand_video]
-function brand_video_shortcode() {
-    return get_field('brand_video', 'option');
-}
-add_shortcode('brand_video', 'brand_video_shortcode');
+// require_once get_stylesheet_directory() . '/inc/acf.php';
+// require_once get_stylesheet_directory() . '/inc/elementor.php';
+require_once get_stylesheet_directory() . '/inc/shortcode.php';

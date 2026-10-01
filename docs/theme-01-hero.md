@@ -1,473 +1,762 @@
-@ -0,0 +1,472 @@
-# [SECTION NAME]
+# Hero Section
 
-**Component:** `[section]`
-**Version:** 1.0
-**Status:** [Draft / Approved]
-**Last Updated:** [YYYY-MM-DD]
+**Component:** `hero`
+**Version:** 1.1
+**Status:** Draft
+**Last Updated:** 2026-09-30
 
 ---
 
-## 01 — Purpose
+# 01 — Purpose
 
-### Overview
+## Overview
 
-[Describe what this section is responsible for and why it exists.]
+The Hero is the primary introductory and conversion section of the landing page.
 
-### Primary Goal
+It combines:
 
-[Describe the primary purpose of the section.]
+* Brand identity
+* Demographic targeting
+* Seasonal content
+* Primary messaging
+* CTA/form
+* Hero imagery
 
-### Used On
+The Hero uses **ACF for structured brand data**, **Theme/PHP for shared variables and dynamic content**, **Elementor for page presentation**, and **Global variables for reusable design values**.
 
-* [PPG]
-* [Promo]
-* [Seminar]
-* [Thank You]
+## Primary Goal
+
+Clearly communicate the landing page's primary message while presenting the appropriate brand, demographic, seasonal, and conversion content.
+
+## Used On
+
+* PPG
+* Promo
+* Seminar
 
 ---
 
 # 02 — Component Structure
 
 ```text
-[section]
-└── [section]__container
-    ├── [section]__content
-    │   ├── [section]__[element]
-    │   └── [section]__[element]
-    │
-    └── [section]__media
-        └── [section]__[element]
+hero
+├── hero__container
+│
+├── hero__content
+│   ├── hero__logo
+│   ├── hero__header
+│   └── hero__cta
+│       ├── hero__subtitle
+│       └── hero__form
+│
+└── hero__media
+    └── hero__video
 ```
 
-### Structure Notes
+## Structure Notes
 
-[Explain the purpose of each major structural area.]
+| Element           | Purpose                 |
+| ----------------- | ----------------------- |
+| `hero`            | Root Hero component     |
+| `hero__container` | Main Hero layout        |
+| `hero__content`   | Primary content area    |
+| `hero__logo`      | Brand logo              |
+| `hero__header`    | Primary Hero messaging  |
+| `hero__cta`       | Primary conversion area |
+| `hero__subtitle`  | Supporting CTA content  |
+| `hero__form`      | Conversion form         |
+| `hero__media`     | Hero media area         |
+| `hero__video`     | Hero video/media        |
 
 ---
 
 # 03 — Class Names
 
-| Element   | Class                  | Purpose                         |
-| --------- | ---------------------- | ------------------------------- |
-| Section   | `[section]`            | Main component                  |
-| Container | `[section]__container` | Controls component width/layout |
-| Content   | `[section]__content`   | Main content area               |
-| Media     | `[section]__media`     | Media area                      |
-| Header    | `[section]__header`    | Heading/header content          |
-| Text      | `[section]__text`      | Supporting text                 |
-| CTA       | `[section]__cta`       | Call-to-action                  |
-| Item      | `[section]__item`      | Repeating item                  |
-
-> Only include the elements that actually exist in this component.
+| Element   | Class             |
+| --------- | ----------------- |
+| Section   | `hero`            |
+| Container | `hero__container` |
+| Content   | `hero__content`   |
+| Logo      | `hero__logo`      |
+| Header    | `hero__header`    |
+| CTA       | `hero__cta`       |
+| Subtitle  | `hero__subtitle`  |
+| Form      | `hero__form`      |
+| Media     | `hero__media`     |
+| Video     | `hero__video`     |
 
 ---
 
-# 04 — Elementor Configuration
+# 04 — ACF Configuration
 
-### Elementor Section ID
+The Hero uses the **Brand** ACF field group for brand-level information.
+
+## ACF Field Group
 
 ```text
-[section]
+Brand
+```
+
+## Fields
+
+| Field         | Type      | Purpose                                 |
+| ------------- | --------- | --------------------------------------- |
+| Logo          | Image     | Hero/brand logo                         |
+| Demographics  | PHP       | Determines demographic-specific content |
+| Seasonal      | PHP       | Determines seasonal-specific content    |
+| Primary Color | Color     | Primary brand color                     |
+| Secondary     | Color     | Secondary brand color                   |
+| Text          | Static    | Static brand text                       |
+| Accent        | Color     | Accent color and border treatment       |
+
+### ACF Structure
+
+```text
+ACF
+└── Brand
+    ├── Logo
+    │   └── hero_logo
+    ├── Demographics
+    │   └── PHP
+    ├── Seasonal
+    │   └── PHP
+    ├── Primary Color
+    ├── Secondary
+    ├── Text
+    │   └── Static
+    └── Accent
+        └── Border
+```
+
+## ACF Responsibility
+
+ACF provides the structured brand information.
+
+The Hero should retrieve this information rather than hardcoding brand-specific values into the component.
+
+---
+
+# 05 — Theme / PHP Configuration
+
+The Theme/PHP layer provides the shared variables and dynamic values required by the Hero.
+
+## Theme/PHP Variables
+
+```text
+Theme/PHP
+├── --text-p
+├── --text-h1
+├── --text-h2
+├── --space-m
+├── --hero-image
+├── --demo-img
+└── --season-img
+```
+
+## Variable Definitions
+
+| Variable       | Purpose                             |
+| -------------- | ----------------------------------- |
+| `--text-p`     | Primary paragraph/body text styling |
+| `--text-h1`    | Primary Hero heading styling        |
+| `--text-h2`    | Secondary heading styling           |
+| `--space-m`    | Standard medium spacing             |
+| `--hero-image` | Hero image/media value              |
+| `--demo-img`   | Demographic-specific image          |
+| `--season-img` | Seasonal-specific image             |
+
+## PHP Responsibilities
+
+PHP determines and outputs the appropriate dynamic values.
+
+Examples include:
+
+```text
+Brand
+ ↓
+ACF
+ ↓
+PHP
+ ↓
+Dynamic Variables
+ ↓
+Hero
+```
+
+### Demographic
+
+The demographic value is determined through PHP and can be used to select the appropriate demographic-specific content or image.
+
+```text
+Demographics
+      ↓
+     PHP
+      ↓
+--demo-img
+```
+
+### Seasonal
+
+The seasonal value is determined through PHP and can be used to select the appropriate seasonal-specific content or image.
+
+```text
+Seasonal
+    ↓
+   PHP
+    ↓
+--season-img
+```
+
+### Hero Image
+
+The Hero image value is provided through the Theme/PHP layer:
+
+```text
+--hero-image
+```
+
+---
+
+# 06 — Elementor Configuration
+
+Elementor controls the visual presentation of the Hero.
+
+## Elementor IDs
+
+The Hero uses the following Elementor IDs:
+
+```text
+#hero__container
+#hero__logo
+#hero__cta
+#hero__content
 ```
 
 ### Elementor Structure
 
 ```text
-[Elementor Section]
-    └── [Container]
-        ├── [Element]
-        └── [Element]
+hero
+└── #hero__container
+    ├── #hero__content
+    │   ├── #hero__logo
+    │   ├── hero__header
+    │   └── #hero__cta
+    │       ├── hero__subtitle
+    │       └── hero__form
+    │
+    └── hero__media
+        └── hero__video
 ```
 
-### Elementor Responsibilities
+## Elementor Responsibilities
 
-* [Layout]
-* [Content presentation]
-* [Media placement]
-* [Responsive adjustments]
-* [Page-specific styling]
+Elementor controls:
 
-### Elementor Classes
+* Visual layout
+* Content placement
+* CTA positioning
+* Form placement
+* Responsive presentation
+* Page-specific visual adjustments
+* Media presentation
 
-| Elementor Element | Custom Class           |
-| ----------------- | ---------------------- |
-| Section           | `[section]`            |
-| Container         | `[section]__container` |
-| Element           | `[section]__[element]` |
+## Elementor IDs vs CSS Classes
 
-### Elementor Notes
+The Elementor IDs above identify the specific Elementor elements.
 
-[Document any Elementor-specific implementation requirements.]
-
----
-
-# 05 — ACF Configuration
-
-### ACF Field Group
-
-`[Field Group Name]`
-
-### Data Source
-
-* [Post Type]
-* [Page]
-* [Global]
-* [Options Page]
-
-### Fields
-
-| Field          | Type      | Required | Purpose   |
-| -------------- | --------- | -------: | --------- |
-| `[field_name]` | [Text]    |      Yes | [Purpose] |
-| `[field_name]` | [Image]   |       No | [Purpose] |
-| `[field_name]` | [WYSIWYG] |       No | [Purpose] |
-| `[field_name]` | [URL]     |       No | [Purpose] |
-
-### ACF Rules
-
-[Document conditional logic, repeaters, flexible content, relationships, or other ACF requirements.]
-
----
-
-# 06 — Content Requirements
-
-### Required Content
-
-* [Content requirement]
-* [Content requirement]
-* [Content requirement]
-
-### Optional Content
-
-* [Optional content]
-* [Optional content]
-
-### Content Rules
-
-[Document character limits, formatting requirements, required fields, fallback behavior, etc.]
-
----
-
-# 07 — PHP / Template Behavior
-
-### Template Location
+The component classes define the reusable architecture.
 
 ```text
-/components/[section]/
+Elementor ID
+    ↓
+Specific Elementor element
+
+CSS Class
+    ↓
+Reusable component architecture
 ```
-
-### Expected Files
-
-```text
-[section]/
-├── [section].php
-├── [section].css
-└── [section].js
-```
-
-> Adjust the file structure according to the final theme architecture.
-
-### PHP Responsibilities
-
-* [Render component]
-* [Retrieve ACF data]
-* [Apply classes]
-* [Handle optional content]
-* [Handle fallback states]
-
-### Data Flow
-
-```text
-ACF
- ↓
-PHP
- ↓
-Component
- ↓
-Elementor / Page
-```
-
-### Conditional Logic
-
-[Document when elements should or should not render.]
 
 Example:
 
-```php
-if ( $field ) {
-    // Render element
-}
+```text
+ID:
+#hero__container
+
+Class:
+.hero__container
+```
+
+The ID should not replace the component class.
+
+---
+
+# 07 — Global Variables
+
+The Hero uses the global design system for reusable styling values.
+
+## Global Variables
+
+```text
+GLOBAL
+├── text-color-primary
+├── bg-color-primary
+└── bor-rad-m
+```
+
+## Variable Definitions
+
+| Variable             | Purpose                  |
+| -------------------- | ------------------------ |
+| `text-color-primary` | Primary text color       |
+| `bg-color-primary`   | Primary background color |
+| `bor-rad-m`          | Medium border radius     |
+
+These values should be defined once within the global design system and reused by components.
+
+---
+
+# 08 — Variable Responsibility
+
+The Hero follows a clear separation between variable sources.
+
+```text
+ACF
+│
+├── Brand Logo
+├── Primary Color
+├── Secondary
+├── Text
+└── Accent
+       │
+       ▼
+     PHP
+       │
+       ├── Demographics
+       ├── Seasonal
+       ├── Hero Image
+       ├── Demo Image
+       └── Season Image
+       │
+       ▼
+    Elementor
+       │
+       └── Visual Presentation
+```
+
+Global design values remain separate:
+
+```text
+GLOBAL
+│
+├── text-color-primary
+├── bg-color-primary
+└── bor-rad-m
 ```
 
 ---
 
-# 08 — CSS Requirements
+# 09 — CSS Requirements
 
-### Component CSS
+## Theme/PHP Variables
 
-```text
-[section]
-[section]__container
-[section]__content
-[section]__media
-```
-
-### Global Dependencies
-
-* [Typography]
-* [Spacing]
-* [Colors]
-* [Container]
-* [Grid]
-* [Flex]
-* [Border Radius]
-
-### CSS Variables
+The Theme/PHP layer establishes the Hero's shared variables:
 
 ```css
---[variable-name]:
+--text-p
+--text-h1
+--text-h2
+--space-m
+--hero-image
+--demo-img
+--season-img
 ```
 
-### Layout
+## Global Variables
 
-**Desktop**
+The Hero can consume:
 
-[Describe desktop layout.]
-
-**Tablet**
-
-[Describe tablet layout.]
-
-**Mobile**
-
-[Describe mobile layout.]
-
----
-
-# 09 — Responsive Behavior
-
-| Element   | Desktop    | Tablet     | Mobile     |
-| --------- | ---------- | ---------- | ---------- |
-| Container | [Behavior] | [Behavior] | [Behavior] |
-| Content   | [Behavior] | [Behavior] | [Behavior] |
-| Media     | [Behavior] | [Behavior] | [Behavior] |
-| CTA       | [Behavior] | [Behavior] | [Behavior] |
-
-### Mobile Priority
-
-1. [Primary content]
-2. [Secondary content]
-3. [CTA]
-4. [Media]
-
-### Responsive Exceptions
-
-[Document any component-specific responsive exceptions.]
-
----
-
-# 10 — JavaScript Behavior
-
-### Required JavaScript
-
-* [None / Required]
-
-### Functionality
-
-[Describe interactive behavior.]
-
-### JavaScript Scope
-
-```text
-[section]
-└── [functionality]
+```css
+text-color-primary
+bg-color-primary
+bor-rad-m
 ```
 
-### Events
-
-* [Click]
-* [Submit]
-* [Scroll]
-* [Load]
-* [Other]
-
----
-
-# 11 — Accessibility
-
-### Requirements
-
-* [Semantic HTML]
-* [Heading hierarchy]
-* [Image alt text]
-* [Keyboard navigation]
-* [Form labels]
-* [Focus states]
-* [Color contrast]
-
-### Accessibility Notes
-
-[Document component-specific accessibility requirements.]
-
----
-
-# 12 — SEO Considerations
-
-### Heading
-
-[H1 / H2 / H3 / Dynamic]
-
-### Content
-
-[SEO/content requirements.]
-
-### Media
-
-[Image/video requirements.]
-
-### Structured Data
-
-[If applicable.]
-
----
-
-# 13 — Variations
-
-### Modifier Classes
-
-```text
-[section]--[modifier]
-```
-
-| Modifier                | Purpose   |
-| ----------------------- | --------- |
-| `[section]--[modifier]` | [Purpose] |
-| `[section]--[modifier]` | [Purpose] |
-
-### Variation Rules
-
-[Explain when each variation should be used.]
-
----
-
-# 14 — Dependencies
+## CSS Responsibility
 
 ### Theme
 
-* [Theme component]
-* [Global CSS]
-* [Global JS]
+The theme provides:
 
-### ACF
-
-* [Field Group]
-* [Field]
+* Root variables
+* CSS reset
+* Universal design foundation
+* Dynamic PHP values
+* Shared component foundations
 
 ### Elementor
 
-* [Widget]
-* [Template]
-* [Global Style]
+Elementor provides:
 
-### Plugins
+* Visual layout
+* Page-specific styling
+* Widget styling
+* Responsive presentation
 
-* [Plugin]
-* [Plugin]
-
----
-
-# 15 — QA Checklist
-
-### Structure
-
-* [ ] Correct section class
-* [ ] Correct container class
-* [ ] Correct element classes
-* [ ] Correct Elementor ID
-* [ ] No unnecessary duplicate classes
-
-### Content
-
-* [ ] Required fields populated
-* [ ] Optional fields tested
-* [ ] Empty states tested
-* [ ] Content formatting verified
-
-### Desktop
-
-* [ ] Layout verified
-* [ ] Typography verified
-* [ ] Spacing verified
-* [ ] Media verified
-* [ ] CTA verified
-
-### Tablet
-
-* [ ] Layout verified
-* [ ] Spacing verified
-* [ ] Typography verified
-* [ ] Media verified
-* [ ] CTA verified
-
-### Mobile
-
-* [ ] Content stacks correctly
-* [ ] Spacing verified
-* [ ] Typography verified
-* [ ] Media verified
-* [ ] CTA verified
-* [ ] Touch targets verified
-
-### Accessibility
-
-* [ ] Keyboard navigation
-* [ ] Focus states
-* [ ] Alt text
-* [ ] Heading hierarchy
-* [ ] Contrast
-* [ ] Form accessibility
+The Hero should not create duplicate global variables when an existing global variable already provides the required value.
 
 ---
 
-# 16 — Implementation Notes
+# 10 — Responsive Behavior
 
-[Add technical notes, known limitations, special cases, or future improvements.]
-
----
-
-# 17 — Change Log
-
-| Version | Date         | Change                | Author |
-| ------- | ------------ | --------------------- | ------ |
-| 1.0     | [YYYY-MM-DD] | Initial documentation | [Name] |
-
----
-
-# Component Summary
+The Hero follows the project-wide responsive standard:
 
 ```text
-Component:
-[section]
+Desktop
+    ↓
+Tablet
+    ↓
+Mobile
+```
 
-Purpose:
-[Short description]
+## Desktop
 
-Elementor ID:
-[section]
+```text
+Content | Media
+```
 
-ACF:
-[Field Group]
+The content and Hero media occupy their respective areas.
 
-PHP:
-[Template/Component]
+## Tablet
 
-CSS:
-[Component CSS]
+The two-area layout is adjusted as needed based on available space.
 
-JavaScript:
-[Required / None]
+Spacing and typography may scale using the established variables.
 
-Responsive:
-Desktop → Tablet → Mobile
+## Mobile
+
+```text
+Content
+    ↓
+Media
+```
+
+The Hero content should simply stack above the media.
+
+## Responsive Variables
+
+The following values may be used to support responsive presentation:
+
+```text
+--text-p
+--text-h1
+--text-h2
+--space-m
+```
+
+---
+
+# 11 — Content / Data Flow
+
+The Hero follows this general data flow:
+
+```text
+ACF Brand
+    │
+    ├── hero_logo
+    ├── Primary Color
+    ├── Secondary
+    ├── Text
+    └── Accent
+         │
+         ▼
+       PHP
+         │
+         ├── Demographics
+         ├── Seasonal
+         ├── Hero Image
+         ├── Demo Image
+         └── Season Image
+         │
+         ▼
+      Hero Component
+         │
+         ▼
+      Elementor
+         │
+         ▼
+   Visual Presentation
+```
+
+Global design values are available independently:
+
+```text
+Global
+├── text-color-primary
+├── bg-color-primary
+└── bor-rad-m
+```
+
+---
+
+# 12 — PHP / Template Behavior
+
+## Component Location
+
+```text
+/components/hero/
+```
+
+## Expected Structure
+
+```text
+hero/
+├── hero.php
+├── hero.css
+└── hero.js
+```
+
+The exact PHP implementation will be defined in the PHP implementation documentation.
+
+## PHP Responsibilities
+
+* Retrieve Brand ACF data
+* Determine demographic data
+* Determine seasonal data
+* Determine appropriate Hero imagery
+* Output dynamic values
+* Render optional content
+* Maintain the Hero component structure
+
+PHP should not control the visual page layout that belongs to Elementor.
+
+---
+
+# 13 — JavaScript
+
+## Required JavaScript
+
+**Status:** To Be Determined
+
+The Hero should not include custom JavaScript unless required for a specific interaction.
+
+Potential functionality may include:
+
+* Video behavior
+* Form behavior
+* CTA interaction
+* Tracking
+* Animation
+
+Global functionality should remain outside the Hero component.
+
+---
+
+# 14 — Accessibility
+
+The Hero must maintain:
+
+* Proper heading hierarchy
+* Accessible logo/image handling
+* Accessible form labels
+* Keyboard navigation
+* Visible focus states
+* Appropriate color contrast
+* Accessible video controls where applicable
+
+The primary Hero heading should normally be the page's H1.
+
+---
+
+# 15 — SEO
+
+## Primary Heading
+
+The Hero should normally contain the page's primary H1.
+
+```html
+<h1>Primary Page Heading</h1>
+```
+
+## Content
+
+Important page information should exist as accessible text rather than being contained only within an image or video.
+
+## Media
+
+Hero media should support, rather than replace, the page's primary textual content.
+
+---
+
+# 16 — Variations
+
+Hero variations may use modifiers where required.
+
+Examples:
+
+```text
+hero--dark
+hero--light
+hero--split
+```
+
+Modifiers should only be introduced when a genuine component variation exists.
+
+Brand, demographic, and seasonal differences should primarily be handled through the appropriate ACF/PHP data rather than creating separate Hero components.
+
+---
+
+# 17 — Dependencies
+
+## ACF
+
+```text
+Brand
+├── hero_logo
+├── Demographics
+├── Seasonal
+├── Primary Color
+├── Secondary
+├── Text
+└── Accent
+```
+
+## Theme/PHP
+
+```text
+--text-p
+--text-h1
+--text-h2
+--space-m
+--hero-image
+--demo-img
+--season-img
+```
+
+## Elementor
+
+```text
+#hero__container
+#hero__logo
+#hero__cta
+#hero__content
+```
+
+## Global
+
+```text
+text-color-primary
+bg-color-primary
+bor-rad-m
+```
+
+---
+
+# 18 — QA Checklist
+
+## Structure
+
+* [ ] `hero` component exists
+* [ ] `hero__container` exists
+* [ ] `hero__content` exists
+* [ ] `hero__logo` exists
+* [ ] `hero__header` exists
+* [ ] `hero__cta` exists
+* [ ] `hero__subtitle` exists
+* [ ] `hero__form` exists
+* [ ] `hero__media` exists
+* [ ] `hero__video` exists
+
+## ACF
+
+* [ ] Brand field group available
+* [ ] `hero_logo` available
+* [ ] Primary Color available
+* [ ] Secondary available
+* [ ] Text available
+* [ ] Accent available
+* [ ] Demographic PHP logic verified
+* [ ] Seasonal PHP logic verified
+
+## Theme/PHP
+
+* [ ] `--text-p` available
+* [ ] `--text-h1` available
+* [ ] `--text-h2` available
+* [ ] `--space-m` available
+* [ ] `--hero-image` available
+* [ ] `--demo-img` available
+* [ ] `--season-img` available
+
+## Elementor
+
+* [ ] `#hero__container`
+* [ ] `#hero__logo`
+* [ ] `#hero__cta`
+* [ ] `#hero__content`
+
+## Global
+
+* [ ] `text-color-primary`
+* [ ] `bg-color-primary`
+* [ ] `bor-rad-m`
+
+## Responsive
+
+* [ ] Desktop verified
+* [ ] Tablet verified
+* [ ] Mobile verified
+* [ ] Content stacks correctly on mobile
+* [ ] Hero media remains responsive
+* [ ] No horizontal overflow
+
+---
+
+# 19 — Component Summary
+
+```text
+HERO
+│
+├── ACF
+│   └── Brand
+│       ├── hero_logo
+│       ├── Demographics → PHP
+│       ├── Seasonal → PHP
+│       ├── Primary Color
+│       ├── Secondary
+│       ├── Text → Static
+│       └── Accent → Border
+│
+├── THEME / PHP
+│   ├── --text-p
+│   ├── --text-h1
+│   ├── --text-h2
+│   ├── --space-m
+│   ├── --hero-image
+│   ├── --demo-img
+│   └── --season-img
+│
+├── ELEMENTOR
+│   ├── #hero__container
+│   ├── #hero__logo
+│   ├── #hero__cta
+│   └── #hero__content
+│
+└── GLOBAL
+    ├── text-color-primary
+    ├── bg-color-primary
+    └── bor-rad-m
+```
+
+---
+
+# 20 — Change Log
+
+| Version | Date       | Change                                                            | Author |
+| ------- | ---------- | ----------------------------------------------------------------- | ------ |
+| 1.0     | 2026-09-30 | Initial Hero documentation                                        | Cindy H |
+| 1.1     | 2026-09-30 | Added ACF, Theme/PHP, Elementor, and Global variable architecture | Cindy H |
+
+```
+
+This version makes the **source of each value explicit**, which will be especially useful when we document the other sections. One thing we should preserve consistently going forward is the distinction between **ACF data**, **PHP-generated values**, **Elementor IDs**, and **global design variables**.
 ```

@@ -4,7 +4,7 @@ Theme URI: https://github.com/summit-mkt/northstar-theme
 Description: Northstar Theme is a child theme of Hello Elementor, created by Summit Marketing team
 Author: Summit Marketing Team
 Template: hello-elementor
-Version: 2.0.2
+Version: 2.0.3
 Text Domain: hello-elementor-child
 License: GNU General Public License v3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -14,9 +14,9 @@ Tags: flexible-header, custom-colors, custom-menu, custom-logo, editor-style, fe
 
 /* CSS Reset */
 
-*, *::before, *::after {
+/* *, *::before, *::after {
   box-sizing: border-box;
-}
+} */
 
 * {
   margin: 0;
@@ -87,7 +87,7 @@ p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
-p {
+p, li {
   text-wrap: pretty;
 }
 
@@ -193,19 +193,70 @@ q::after {
   
   --txt-size__base: 1rem;
 
-  --space__v-lg: clamp(1.875rem, 0.7746rem + 4.6948vw, 5rem);
+  --space__v-lg: clamp(1.875rem, 0.7746rem + 4.6948vw, 5rem); /* container-space__v-md and brand section*/
   --space__v-md: clamp(1.4375rem, 0.6232rem + 3.4742vw, 3.75rem);
+  --space__h-lg: clamp(1rem, -0.9586rem + 8.3568vw, 6.5625rem); /* brand-section-padding */
 
-  --space__h-lg: clamp(1rem, -0.9586rem + 8.3568vw, 6.5625rem);
+  --space__v-md2: clamp(1.25rem, -0.0352rem + 2.681vw, 1.8rem); /* active temp-gap-1 | vertical text gap*/
 
-  --border-radius: 12px;
+  --space__v-cta: clamp(1.25rem, 1.0299rem + 0.939vw, 1.875rem);
+  --space__h-cta: clamp(1.25rem, 1.0299rem + 0.939vw, 1.875rem); /*used on cta-padding | gap-m is also 1.25*/
+  --space__col-gap: clamp(2rem, 1.2738rem + 3.0986vw, 4.0625rem); /* used on hero column gap temp-gap-2*/
+  --space__v-ben-card: clamp(1.875rem, 1.6549rem + 0.939vw, 2.5rem); /* Used on cta-padding ()*/
+  --space__h-ben-card: clamp(0.625rem, 0.493rem + 0.5634vw, 1rem);
+
+  --bord-radius__m: 12px;
 }
 
 #hero {
   min-height: 80vh;
+
+  & .flex-stack-mobile {
+    column-gap: 0px;
+  }
 }
+
+.li-atomic > p {
+  padding-left: 1rem;
+
+  &::before {
+    content: "✔️";
+    /* background-image: url(); */
+    background-size: contain;
+    display: inline-block;
+    width:1rem;
+    height: 1rem;
+    positiion: relative;
+    top: 0.1rem;
+    margin-right: 0.2rem;
+    color: black;
+  }
+}
+
+/* 
+Doesn't work for Brand Section
+
+Brand Section flex should collapse in between desktop-mobile. Media query maybe.
+
+section {
+  display: flex;  
+  flex-direction: column; 
+} */
 
 .container-inner {
   /* Only example of utilizing Elementor CSS Classes */
   max-width: var(--container-max-width);
+}
+
+.container-inner button {
+  font-family: Open Sans, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  max-width: 400px;
+  border-bottom: 3px;
+  letter-spacing: 1px;
+}
+
+#benefits .grid-stack-3-2-1 {
+  gap: 0.5rem;
 }

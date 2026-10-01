@@ -14,8 +14,42 @@ Tags: flexible-header, custom-colors, custom-menu, custom-logo, editor-style, fe
 
 /* CSS Reset */
 
-#root {
-  isolation: isolate;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  min-width: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%; /* Safari, iOS Safari */
+  text-size-adjust: 100%;         /* Chrome, Edge, Firefox Android */
 }
 
 body {
@@ -24,21 +58,36 @@ body {
 }
 
 body {
+  overflow-x: clip;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html {
+  overscroll-behavior: contain;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: always;
+  text-rendering: optimizeLegibility;
+}
+
+body {
   line-height: 1.5;
 }
+
 h1, h2, h3, h4, h5, h6 {
   line-height: 1.1;
 }
 
-/* Prevents long URLs or unbreakable strings from blowing out their container. */
 p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
-/* Smarter line-breaking:
-   'pretty' avoids widows (lone words on the last line of a paragraph).
-   'balance' distributes heading text more evenly across lines. 
-   Harmless in browsers that don't support them. */
 p {
   text-wrap: pretty;
 }
@@ -47,8 +96,6 @@ h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
 }
 
-/* Headings carry semantic meaning, not visual weight.
-   h1–h6 sizing and boldness should come from your design system. */
 h1, h2, h3, h4, h5, h6 {
   font-size: inherit;
   font-weight: inherit;
@@ -60,8 +107,8 @@ img, picture, video, canvas, svg, embed, iframe, object, audio {
   height: auto;
 }
 
-input, button, textarea, select {
-  font: inherit;
+svg[width][height] {
+  max-width: revert;
 }
 
 button {
@@ -69,16 +116,97 @@ button {
   border: none;
 }
 
-svg[width][height] {
-  max-width: revert;
+input, button, textarea, select {
+  font: inherit;
 }
 
+input, button, textarea, select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button,
+[role="button"],
+label,
+summary,
+select {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  font-weight: inherit;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+}
+
+label { 
+  display: inline-block; 
+  line-height: 1; 
+  vertical-align: middle;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sub { bottom: -0.25em; }
+sup { top: -0.5em; }
+
+pre, code, kbd, samp {
+  font-family: monospace;
+  font-size: inherit;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: none;
+}
+
+#root {
+  isolation: isolate;
+}
 
 :root {
-	--txt-size__h-lg: clamp(1.8rem, 0.6426rem + 4.3573vw, 3.7472rem);
+  --txt-size__h-lg: clamp(1.8rem, 0.6426rem + 4.3573vw, 3.7472rem);
 	--txt-size__h-md: clamp(1.5rem, 0.9067rem + 2.2336vw, 2.4981rem);
 	--txt-size__h-sm: clamp(1.0417rem, 1.0009rem + 0.1535vw, 1.1103rem);
 	--txt-size__h-xs: clamp(1.1103rem, 1.4216rem + -0.437vw, 1.3056rem);
+  
+  --txt-size__base: 1rem;
 
-    --txt-size__base: 1rem;
+  --space__v-lg: clamp(1.875rem, 0.7746rem + 4.6948vw, 5rem);
+  --space__v-md: clamp(1.4375rem, 0.6232rem + 3.4742vw, 3.75rem);
+
+  --space__h-lg: clamp(1rem, -0.9586rem + 8.3568vw, 6.5625rem);
+
+  --border-radius: 12px;
+}
+
+#hero {
+  min-height: 80vh;
+}
+
+.container-inner {
+  /* Only example of utilizing Elementor CSS Classes */
+  max-width: var(--container-max-width);
 }

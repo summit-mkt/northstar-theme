@@ -1,624 +1,473 @@
-# 02 — Offer Section
+@ -0,0 +1,472 @@
+# [SECTION NAME]
+
+**Component:** `[section]`
+**Version:** 1.0
+**Status:** [Draft / Approved]
+**Last Updated:** [YYYY-MM-DD]
+
+---
 
 ## 01 — Purpose
 
-The Offer section presents the primary offer information, supporting details, imagery, and call to action.
+### Overview
 
-The component is reusable across landing-page types and supports a configurable content order through the ACF `Direction` switch.
+[Describe what this section is responsible for and why it exists.]
+
+### Primary Goal
+
+[Describe the primary purpose of the section.]
+
+### Used On
+
+* [PPG]
+* [Promo]
+* [Seminar]
+* [Thank You]
 
 ---
 
 # 02 — Component Structure
 
 ```text
-offer
-└── offer__container
-    ├── offer__header
+[section]
+└── [section]__container
+    ├── [section]__content
+    │   ├── [section]__[element]
+    │   └── [section]__[element]
     │
-    ├── offer__grid
-    │   └── offer__item
-    │
-    ├── offer__text
-    └── offer__cta
+    └── [section]__media
+        └── [section]__[element]
 ```
+
+### Structure Notes
+
+[Explain the purpose of each major structural area.]
 
 ---
 
 # 03 — Class Names
 
-| Element   | Class              |
-| --------- | ------------------ |
-| Section   | `offer`            |
-| Container | `offer__container` |
-| Header    | `offer__header`    |
-| Grid      | `offer__grid`      |
-| Item      | `offer__item`      |
-| Text      | `offer__text`      |
-| CTA       | `offer__cta`       |
+| Element   | Class                  | Purpose                         |
+| --------- | ---------------------- | ------------------------------- |
+| Section   | `[section]`            | Main component                  |
+| Container | `[section]__container` | Controls component width/layout |
+| Content   | `[section]__content`   | Main content area               |
+| Media     | `[section]__media`     | Media area                      |
+| Header    | `[section]__header`    | Heading/header content          |
+| Text      | `[section]__text`      | Supporting text                 |
+| CTA       | `[section]__cta`       | Call-to-action                  |
+| Item      | `[section]__item`      | Repeating item                  |
 
-### Modifier
-
-```text
-offer--reverse
-```
-
-The `offer--reverse` modifier changes the visual order of the Offer content.
+> Only include the elements that actually exist in this component.
 
 ---
 
-# 04 — ACF Configuration
+# 04 — Elementor Configuration
 
-The Offer uses the **Page** ACF field group for page-level Offer information.
-
-## ACF Field Group
+### Elementor Section ID
 
 ```text
-Page
+[section]
 ```
 
-## Fields
-
-| Field     | Type             | Purpose                                         |
-| --------- | ---------------- | ----------------------------------------------- |
-| Title     | Text             | Primary heading for the Offer section.          |
-| Subtitle  | Text             | Supporting heading or introductory Offer text.  |
-| Direction | True / False     | Controls the visual order of the Offer content. |
-| Address   | Text             | Physical address associated with the Offer.     |
-| Datetime  | Date Time Picker | Date and time associated with the Offer.        |
-| Image 1   | Image            | Primary Offer image.                            |
-| Image 2   | Image            | Secondary Offer image.                          |
-
-## Direction
-
-`Direction` is a **True / False** field used as a content-order switch.
-
-### Default
+### Elementor Structure
 
 ```text
-Direction = Off
+[Elementor Section]
+    └── [Container]
+        ├── [Element]
+        └── [Element]
 ```
 
-```text
-Content → Media
-```
+### Elementor Responsibilities
 
-### Reverse
+* [Layout]
+* [Content presentation]
+* [Media placement]
+* [Responsive adjustments]
+* [Page-specific styling]
 
-```text
-Direction = On
-```
+### Elementor Classes
 
-```text
-Media → Content
-```
+| Elementor Element | Custom Class           |
+| ----------------- | ---------------------- |
+| Section           | `[section]`            |
+| Container         | `[section]__container` |
+| Element           | `[section]__[element]` |
 
-When enabled, PHP applies:
+### Elementor Notes
 
-```text
-offer--reverse
-```
-
-Result:
-
-```text
-offer offer--reverse
-```
-
-The HTML structure remains unchanged. CSS controls the visual order.
+[Document any Elementor-specific implementation requirements.]
 
 ---
 
-# 05 — Theme/PHP Configuration
+# 05 — ACF Configuration
 
-The Theme/PHP layer retrieves the ACF data and prepares it for the Offer component.
+### ACF Field Group
 
-## Responsibilities
+`[Field Group Name]`
 
-* Retrieve Offer ACF fields
-* Handle optional fields
-* Format the date/time
-* Retrieve image data
-* Determine the Direction value
-* Apply `offer--reverse`
-* Maintain the Offer HTML structure
+### Data Source
 
-## Direction Logic
+* [Post Type]
+* [Page]
+* [Global]
+* [Options Page]
 
-```text
-ACF Direction
-      ↓
-   PHP
-      ↓
-Direction = Off
-      ↓
-offer
+### Fields
 
-Direction = On
-      ↓
-offer offer--reverse
-```
+| Field          | Type      | Required | Purpose   |
+| -------------- | --------- | -------: | --------- |
+| `[field_name]` | [Text]    |      Yes | [Purpose] |
+| `[field_name]` | [Image]   |       No | [Purpose] |
+| `[field_name]` | [WYSIWYG] |       No | [Purpose] |
+| `[field_name]` | [URL]     |       No | [Purpose] |
 
-PHP controls the state; CSS controls the visual result.
+### ACF Rules
+
+[Document conditional logic, repeaters, flexible content, relationships, or other ACF requirements.]
 
 ---
 
-# 06 — Elementor Configuration
+# 06 — Content Requirements
 
-Elementor controls the visual presentation and page-specific configuration.
+### Required Content
 
-## Elementor ID
+* [Content requirement]
+* [Content requirement]
+* [Content requirement]
 
-```text
-#offer
-```
+### Optional Content
 
-## Elementor Elements
+* [Optional content]
+* [Optional content]
 
-```text
-#offer__container
-#offer__header
-#offer__grid
-#offer__item
-#offer__text
-#offer__cta
-```
+### Content Rules
 
-## Elementor Responsibilities
-
-* Component placement
-* Visual presentation
-* Grid configuration
-* Responsive adjustments
-* Page-specific styling
-* CTA presentation
-
-Elementor IDs are separate from the BEM class naming system.
+[Document character limits, formatting requirements, required fields, fallback behavior, etc.]
 
 ---
 
-# 07 — Global Variables
+# 07 — PHP / Template Behavior
 
-The Offer component uses the project's global design system.
-
-```text
-GLOBAL
-├── Flex
-├── Grid
-├── Color
-└── Sizes
-    ├── Spacing
-    └── Border-Radius
-```
-
-The component should use existing global variables rather than creating duplicate values.
-
-### Global Variables Used
-
-* Primary text color
-* Primary background color
-* Typography variables
-* Spacing variables
-* Border-radius variables
-* Grid variables
-* Flex variables
-
----
-
-# 08 — Variable Responsibility
-
-| Variable / Data             | Responsibility |
-| --------------------------- | -------------- |
-| Title                       | ACF            |
-| Subtitle                    | ACF            |
-| Direction                   | ACF            |
-| Address                     | ACF            |
-| Datetime                    | ACF            |
-| Image 1                     | ACF            |
-| Image 2                     | ACF            |
-| Content retrieval           | PHP            |
-| `offer--reverse`            | PHP            |
-| Component CSS               | Theme          |
-| Global design variables     | Theme          |
-| Page presentation           | Elementor      |
-| Responsive page adjustments | Elementor      |
-
-### Architecture Rule
-
-**ACF = structured data**
-
-**PHP = data retrieval and component logic**
-
-**Theme CSS = universal component styling**
-
-**Elementor = page presentation**
-
----
-
-# 09 — CSS Requirements
-
-The Offer component requires universal theme CSS for its reusable structure.
-
-## Base Classes
+### Template Location
 
 ```text
-.offer
-.offer__container
-.offer__header
-.offer__grid
-.offer__item
-.offer__text
-.offer__cta
+/components/[section]/
 ```
 
-## Modifier
+### Expected Files
 
 ```text
-.offer--reverse
+[section]/
+├── [section].php
+├── [section].css
+└── [section].js
 ```
 
-### CSS Responsibilities
+> Adjust the file structure according to the final theme architecture.
 
-* Offer layout
-* Grid behavior
-* Content ordering
-* Spacing
-* Typography foundation
-* Image behavior
-* CTA structure
-* Responsive behavior
-* Border radius
+### PHP Responsibilities
 
-The theme should provide the reusable Offer styling.
+* [Render component]
+* [Retrieve ACF data]
+* [Apply classes]
+* [Handle optional content]
+* [Handle fallback states]
 
-Page-specific styling remains within Elementor.
-
----
-
-# 10 — Responsive Behavior
-
-The Offer follows the standard project responsive structure:
-
-```text
-Desktop
-   ↓
-Tablet
-   ↓
-Mobile
-```
-
-## Desktop
-
-Default:
-
-```text
-Content | Media
-```
-
-Reverse:
-
-```text
-Media | Content
-```
-
-## Tablet
-
-The component adapts to the available width while maintaining the selected content order.
-
-## Mobile
-
-The content stacks vertically.
-
-Default:
-
-```text
-Content
-Media
-```
-
-Reverse:
-
-```text
-Media
-Content
-```
-
-The `Direction` setting controls the intended order across responsive layouts.
-
----
-
-# 11 — Content/Data Flow
+### Data Flow
 
 ```text
 ACF
- │
- ├── Title
- ├── Subtitle
- ├── Direction
- ├── Address
- ├── Datetime
- ├── Image 1
- └── Image 2
- │
  ↓
-PHP / Theme
- │
- ├── Retrieve data
- ├── Format data
- ├── Check optional fields
- └── Apply offer--reverse
- │
+PHP
  ↓
-Offer Component
- │
- ├── offer__header
- ├── offer__grid
- ├── offer__item
- ├── offer__text
- └── offer__cta
- │
+Component
  ↓
-Elementor
- │
- └── Page Presentation
+Elementor / Page
 ```
 
----
+### Conditional Logic
 
-# 12 — PHP/Template Behavior
+[Document when elements should or should not render.]
 
-The Offer template should:
-
-1. Retrieve the Page ACF fields.
-2. Check optional fields.
-3. Retrieve the Direction value.
-4. Apply `offer--reverse` when enabled.
-5. Output only populated content.
-6. Maintain the same HTML structure.
-7. Provide appropriate image attributes.
-8. Allow Elementor to control presentation.
-
-### Direction Example
+Example:
 
 ```php
-$direction = get_field('direction');
-
-$offer_class = 'offer';
-
-if ($direction) {
-    $offer_class .= ' offer--reverse';
+if ( $field ) {
+    // Render element
 }
 ```
 
-Output:
-
-```html
-<section class="offer">
-```
-
-or:
-
-```html
-<section class="offer offer--reverse">
-```
-
 ---
 
-# 13 — JavaScript
+# 08 — CSS Requirements
 
-The Offer component does not require JavaScript for its core functionality.
+### Component CSS
 
 ```text
-JavaScript
-└── Not required
+[section]
+[section]__container
+[section]__content
+[section]__media
 ```
 
-The Direction functionality is handled through:
+### Global Dependencies
+
+* [Typography]
+* [Spacing]
+* [Colors]
+* [Container]
+* [Grid]
+* [Flex]
+* [Border Radius]
+
+### CSS Variables
+
+```css
+--[variable-name]:
+```
+
+### Layout
+
+**Desktop**
+
+[Describe desktop layout.]
+
+**Tablet**
+
+[Describe tablet layout.]
+
+**Mobile**
+
+[Describe mobile layout.]
+
+---
+
+# 09 — Responsive Behavior
+
+| Element   | Desktop    | Tablet     | Mobile     |
+| --------- | ---------- | ---------- | ---------- |
+| Container | [Behavior] | [Behavior] | [Behavior] |
+| Content   | [Behavior] | [Behavior] | [Behavior] |
+| Media     | [Behavior] | [Behavior] | [Behavior] |
+| CTA       | [Behavior] | [Behavior] | [Behavior] |
+
+### Mobile Priority
+
+1. [Primary content]
+2. [Secondary content]
+3. [CTA]
+4. [Media]
+
+### Responsive Exceptions
+
+[Document any component-specific responsive exceptions.]
+
+---
+
+# 10 — JavaScript Behavior
+
+### Required JavaScript
+
+* [None / Required]
+
+### Functionality
+
+[Describe interactive behavior.]
+
+### JavaScript Scope
 
 ```text
-ACF → PHP → CSS
+[section]
+└── [functionality]
 ```
 
-JavaScript should only be introduced if a future Offer interaction requires it.
+### Events
+
+* [Click]
+* [Submit]
+* [Scroll]
+* [Load]
+* [Other]
 
 ---
 
-# 14 — Accessibility
-
-The Offer component should follow standard accessibility practices.
-
-### Headings
-
-* Maintain a logical heading hierarchy.
-* Do not skip heading levels for visual styling.
-
-### Images
-
-* Provide meaningful alt text for content images.
-* Use empty alt attributes for decorative images when appropriate.
-
-### CTA
-
-* Use descriptive CTA text.
-* Ensure links/buttons are keyboard accessible.
-* Maintain visible focus states.
-
-### Content
-
-* Address information should remain readable.
-* Date/time information should be presented in a human-readable format.
-
----
-
-# 15 — SEO
-
-The Offer component should use semantic and meaningful content.
+# 11 — Accessibility
 
 ### Requirements
 
-* Use the appropriate heading level.
-* Keep important Offer content as HTML text.
-* Use descriptive image alt text.
-* Keep address and date/time information indexable.
-* Avoid placing important content exclusively inside images.
+* [Semantic HTML]
+* [Heading hierarchy]
+* [Image alt text]
+* [Keyboard navigation]
+* [Form labels]
+* [Focus states]
+* [Color contrast]
 
-The Offer component should not create unnecessary duplicate content or metadata.
+### Accessibility Notes
 
----
-
-# 16 — Variations
-
-## Default Offer
-
-```text
-offer
-```
-
-Content order:
-
-```text
-Content → Media
-```
-
-## Reverse Offer
-
-```text
-offer offer--reverse
-```
-
-Content order:
-
-```text
-Media → Content
-```
-
-The variation is controlled through the ACF `Direction` field.
-
-No separate template is required.
+[Document component-specific accessibility requirements.]
 
 ---
 
-# 17 — Dependencies
+# 12 — SEO Considerations
 
-The Offer component depends on:
+### Heading
 
-### WordPress
+[H1 / H2 / H3 / Dynamic]
 
-* Page/template system
-* Media handling
-* Content management
+### Content
 
-### ACF
+[SEO/content requirements.]
 
-* Page field group
-* Offer fields
-* Direction switch
+### Media
+
+[Image/video requirements.]
+
+### Structured Data
+
+[If applicable.]
+
+---
+
+# 13 — Variations
+
+### Modifier Classes
+
+```text
+[section]--[modifier]
+```
+
+| Modifier                | Purpose   |
+| ----------------------- | --------- |
+| `[section]--[modifier]` | [Purpose] |
+| `[section]--[modifier]` | [Purpose] |
+
+### Variation Rules
+
+[Explain when each variation should be used.]
+
+---
+
+# 14 — Dependencies
 
 ### Theme
 
-* PHP/template structure
-* Component architecture
-* Universal CSS
-* Global design variables
-
-### Elementor Pro
-
-* Page presentation
-* Visual editing
-* Responsive adjustments
-* Page-specific styling
-
----
-
-# 18 — QA Checklist
-
-### Structure
-
-* [ ] `offer` exists
-* [ ] `offer__container` exists
-* [ ] `offer__header` exists
-* [ ] `offer__grid` exists
-* [ ] `offer__item` exists
-* [ ] `offer__text` exists
-* [ ] `offer__cta` exists
+* [Theme component]
+* [Global CSS]
+* [Global JS]
 
 ### ACF
 
-* [ ] Page field group configured
-* [ ] Title configured as Text
-* [ ] Subtitle configured as Text
-* [ ] Direction configured as True / False
-* [ ] Address configured as Text
-* [ ] Datetime configured as Date Time Picker
-* [ ] Image 1 configured as Image
-* [ ] Image 2 configured as Image
-
-### Direction
-
-* [ ] Default Direction is Off
-* [ ] Default content order works
-* [ ] Direction On applies `offer--reverse`
-* [ ] Reverse content order works
-* [ ] Mobile preserves the intended order
-
-### Responsive
-
-* [ ] Desktop verified
-* [ ] Tablet verified
-* [ ] Mobile verified
-* [ ] Content stacks correctly
-* [ ] No horizontal overflow
+* [Field Group]
+* [Field]
 
 ### Elementor
 
-* [ ] `#offer` ID configured
-* [ ] Elementor presentation verified
-* [ ] Responsive settings do not conflict with theme CSS
+* [Widget]
+* [Template]
+* [Global Style]
+
+### Plugins
+
+* [Plugin]
+* [Plugin]
 
 ---
 
-# 19 — Component Summary
+# 15 — QA Checklist
+
+### Structure
+
+* [ ] Correct section class
+* [ ] Correct container class
+* [ ] Correct element classes
+* [ ] Correct Elementor ID
+* [ ] No unnecessary duplicate classes
+
+### Content
+
+* [ ] Required fields populated
+* [ ] Optional fields tested
+* [ ] Empty states tested
+* [ ] Content formatting verified
+
+### Desktop
+
+* [ ] Layout verified
+* [ ] Typography verified
+* [ ] Spacing verified
+* [ ] Media verified
+* [ ] CTA verified
+
+### Tablet
+
+* [ ] Layout verified
+* [ ] Spacing verified
+* [ ] Typography verified
+* [ ] Media verified
+* [ ] CTA verified
+
+### Mobile
+
+* [ ] Content stacks correctly
+* [ ] Spacing verified
+* [ ] Typography verified
+* [ ] Media verified
+* [ ] CTA verified
+* [ ] Touch targets verified
+
+### Accessibility
+
+* [ ] Keyboard navigation
+* [ ] Focus states
+* [ ] Alt text
+* [ ] Heading hierarchy
+* [ ] Contrast
+* [ ] Form accessibility
+
+---
+
+# 16 — Implementation Notes
+
+[Add technical notes, known limitations, special cases, or future improvements.]
+
+---
+
+# 17 — Change Log
+
+| Version | Date         | Change                | Author |
+| ------- | ------------ | --------------------- | ------ |
+| 1.0     | [YYYY-MM-DD] | Initial documentation | [Name] |
+
+---
+
+# Component Summary
 
 ```text
-OFFER
-│
-├── Component
-│   └── offer
-│
-├── ACF
-│   └── Page
-│       ├── Title
-│       ├── Subtitle
-│       ├── Direction
-│       ├── Address
-│       ├── Datetime
-│       ├── Image 1
-│       └── Image 2
-│
-├── Theme/PHP
-│   ├── Data retrieval
-│   ├── Date formatting
-│   └── Direction logic
-│
-├── Elementor
-│   └── #offer
-│
-├── CSS
-│   ├── Component styles
-│   └── offer--reverse
-│
-└── Responsive
-    └── Desktop → Tablet → Mobile
+Component:
+[section]
+
+Purpose:
+[Short description]
+
+Elementor ID:
+[section]
+
+ACF:
+[Field Group]
+
+PHP:
+[Template/Component]
+
+CSS:
+[Component CSS]
+
+JavaScript:
+[Required / None]
+
+Responsive:
+Desktop → Tablet → Mobile
 ```
-
----
-
-# 20 — Change Log
-
-| Version | Change                                             |
-| ------- | -------------------------------------------------- |
-| 1.0     | Initial Offer component documentation              |
-| 1.0     | Added complete ACF field configuration             |
-| 1.0     | Changed Direction to True / False                  |
-| 1.0     | Defined Direction as content-order control         |
-| 1.0     | Added `offer--reverse` modifier                    |
-| 1.0     | Standardized structure to match Hero documentation |

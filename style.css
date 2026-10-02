@@ -4,7 +4,7 @@ Theme URI: https://github.com/summit-mkt/northstar-theme
 Description: Northstar Theme is a child theme of Hello Elementor, created by Summit Marketing team
 Author: Summit Marketing Team
 Template: hello-elementor
-Version: 2.0.3
+Version: 2.0.4
 Text Domain: hello-elementor-child
 License: GNU General Public License v3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -212,16 +212,21 @@ q::after {
   min-height: 80vh;
 
   & .flex-stack-mobile {
-    column-gap: 0px;
+    row-gap: 0px;
   }
 }
+
+.elementor-form-fields-wrapper {
+  column-gap: 0.625rem;
+  row-gap: 1rem;
+} 
 
 .li-atomic > p {
   padding-left: 1rem;
 
   &::before {
-    content: "✔️";
-    /* background-image: url(); */
+    content: "";
+    background-image: url("assets/images/icon/circle-check-regular.svg");
     background-size: contain;
     display: inline-block;
     width:1rem;
@@ -231,6 +236,10 @@ q::after {
     margin-right: 0.2rem;
     color: black;
   }
+}
+
+.li-atomic:hover > p::before {
+  color: var(--Primary);
 }
 
 /* 
@@ -257,6 +266,54 @@ section {
   letter-spacing: 1px;
 }
 
-#benefits .grid-stack-3-2-1 {
+#benefits .grid-stack__3-2-1 {
   gap: 0.5rem;
+}
+
+/* Benefits */
+#benefits .benefit__card { 
+  transition: transform 0.3s ease-in-out !important;
+
+  &:nth-child(even) {
+    color: #ffffff;
+    background-color: var(--Primary);
+  }
+
+  &:hover {
+    transform: scale(1.025);
+    z-index: 10;
+    background: var(--secondary);
+    color: #ffffff;
+  }
+
+  &:hover h4,
+  &:nth-child(2n) .benefit__title {
+    color: #ffffff;
+  }
+
+  &:nth-child(even) svg path {
+    fill: #ffffff;
+  }
+
+  & svg path {
+    fill: var(--Primary);
+  }
+
+  &:hover svg path {
+    fill: #ffffff;
+  }
+
+  &:nth-child(4) svg path {
+    stroke: none !important;
+  }
+
+  &::nth-child(5) svg path {
+    fill: var(--Primary);
+    stroke: black;
+  }
+
+  &:nth-child(5):hover svg path {
+    stroke: var(--secondary);
+  }
+
 }

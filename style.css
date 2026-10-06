@@ -4,7 +4,7 @@ Theme URI: https://github.com/summit-mkt/northstar-theme
 Description: Northstar Theme is a child theme of Hello Elementor, created by Summit Marketing team
 Author: Summit Marketing Team
 Template: hello-elementor
-Version: 2.0.6
+Version: 2.0.7
 Text Domain: hello-elementor-child
 License: GNU General Public License v3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -112,7 +112,6 @@ svg[width][height] {
 
 button {
   background: none;
-  border: none;
 }
 
 input, button, textarea, select {
@@ -190,6 +189,7 @@ q::after {
 	--txt-size__h-md: clamp(1.5rem, 0.9067rem + 2.2336vw, 2.4981rem);
 	--txt-size__h-sm: clamp(1.0417rem, 1.0009rem + 0.1535vw, 1.1103rem);
 	--txt-size__h-xs: clamp(1.1103rem, 1.4216rem + -0.437vw, 1.3056rem);
+  --text-size__h-splash: clamp(2.45rem, 0.6426rem + 4.3573vw, 3.7472rem);
   
   --txt-size__base: 1rem;
 
@@ -208,12 +208,24 @@ q::after {
   --bord-radius__m: 12px;
 }
 
-#hero {
+h1, h2 {
+  font-size: var(--txt-size__h_md);
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+#hero, #closer {
   min-height: 80vh;
 
   & .flex-stack-mobile {
     row-gap: 0px;
   }
+}
+
+p, li {
+  font-size: var(--txt-size__base);
 }
 
 .li-atomic > p {
@@ -224,10 +236,11 @@ q::after {
     background-image: url("assets/images/icon/circle-check-regular.svg");
     background-size: contain;
     display: inline-block;
-    width:1rem;
+    width: 1rem;
     height: 1rem;
-    positiion: relative;
+    position: relative;
     top: 0.1rem;
+    bottom: 0.1rem;
     margin-right: 0.2rem;
     color: black;
   }

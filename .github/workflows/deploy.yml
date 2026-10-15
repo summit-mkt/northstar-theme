@@ -19,11 +19,8 @@ on:
           - '4'
 
 jobs:
-  prepare:
+  deploy:
     runs-on: ubuntu-latest
-    outputs:
-      sites: ${{ steps.filter.outputs.sites }}
-      count: ${{ steps.filter.outputs.count }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v7
@@ -34,15 +31,22 @@ jobs:
           ${{ secrets.SITE_REGISTRY_JSON }}
           EOF
 
-      - name: Debug registry
+      - name: Install SSH key
         run: |
-          echo "Registry line count: $(wc -l < site-registry.json)"
-          echo "Total sites in registry: $(jq 'length' site-registry.json)"
-          echo "Sites with ssh_setup=Yes: $(jq '[.[] | select(.ssh_setup == "Yes")] | length' site-registry.json)"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
 
-      - id: filter
+      - name: Deploy to all matching sites
+        env:
+          PRIORITY: ${{ github.event.inputs.priority || '0' }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SITE_PATH: ${{ secrets.SITE_PATH }}
+          THEME_SLUG: ${{ secrets.THEME_SLUG }}
         run: |
-          PRIORITY="${{ github.event.inputs.priority || 'all' }}"
+          set -e
           echo "Filtering for priority: $PRIORITY"
 
           if [ "$PRIORITY" = "all" ]; then
@@ -51,55 +55,34 @@ jobs:
             FILTER="[.[] | select(.ssh_setup == \"Yes\" and .site_path != null and .priority == $PRIORITY)]"
           fi
 
-          SITES=$(jq -c "$FILTER | map({
-            name: .name,
-            user: (\"${{ secrets.SSH_USER }}_\" + .site_path),
-            path: (\"${{ secrets.SITE_PATH }}/\" + .site_path + \"/public_html\")
-          })" site-registry.json)
-
-          COUNT=$(echo "$SITES" | jq 'length')
-
-          echo "sites=$SITES" >> $GITHUB_OUTPUT
-          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          COUNT=$(jq "$FILTER | length" site-registry.json)
           echo "Will deploy to $COUNT sites"
-          echo "$SITES" | jq '.'
 
-  deploy:
-    needs: prepare
-    if: ${{ needs.prepare.outputs.count != '0' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      max-parallel: 4
-      matrix:
-        site: ${{ fromJson(needs.prepare.outputs.sites) }}
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v7
+          jq -c "$FILTER" site-registry.json | jq -c '.[]' | while IFS= read -r SITE; do
+            SITE_PATH_CODE=$(echo "$SITE" | jq -r '.site_path')
+            SITE_NAME=$(echo "$SITE" | jq -r '.name')
+            FULL_USER="${SSH_USER}_${SITE_PATH_CODE}"
+            FULL_PATH="${SITE_PATH}/${SITE_PATH_CODE}/public_html"
 
-      - name: Install SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
+            echo "::group::Deploying to $SITE_NAME ($SITE_PATH_CODE)"
+            echo "user: $FULL_USER"
+            echo "path: $FULL_PATH"
 
-      - name: Deploy theme via rsync
-        run: |
-          echo "Deploying to ${{ matrix.site.name }}"
-          echo "  user: ${{ matrix.site.user }}"
-          echo "  path: ${{ matrix.site.path }}"
-          rsync -avz --delete \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-            --exclude='.git' \
-            --exclude='.github' \
-            --exclude='.gitignore' \
-            --exclude='node_modules' \
-            --exclude='site-registry.json' \
-            ./ ${{ matrix.site.user }}@${{ secrets.SSH_HOST }}:${{ matrix.site.path }}/wp-content/themes/${{ secrets.THEME_SLUG }}/
+            rsync -avz --delete \
+              -e "ssh -i ~/.ssh/deploy_key -p ${SSH_PORT} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+              --exclude='.git' \
+              --exclude='.github' \
+              --exclude='.gitignore' \
+              --exclude='node_modules' \
+              --exclude='site-registry.json' \
+              ./ "${FULL_USER}@${SSH_HOST}:${FULL_PATH}/wp-content/themes/${THEME_SLUG}/"
 
-      - name: Flush WP cache
-        run: |
-          ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} \
-            -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            ${{ matrix.site.user }}@${{ secrets.SSH_HOST }} \
-            "wp cache flush --path=${{ matrix.site.path }} 2>&1 || true"
+            ssh -i ~/.ssh/deploy_key -p "${SSH_PORT}" \
+              -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+              "${FULL_USER}@${SSH_HOST}" \
+              "wp cache flush --path=${FULL_PATH} 2>&1 || true"
+
+            echo "::endgroup::"
+          done
+
+          echo "All deployments complete"

@@ -46,7 +46,6 @@ jobs:
           SITE_PATH: ${{ secrets.SITE_PATH }}
           THEME_SLUG: ${{ secrets.THEME_SLUG }}
         run: |
-          set -e
           echo "Filtering for priority: $PRIORITY"
 
           if [ "$PRIORITY" = "all" ]; then
@@ -58,7 +57,8 @@ jobs:
           COUNT=$(jq "$FILTER | length" site-registry.json)
           echo "Will deploy to $COUNT sites"
 
-          jq -c "$FILTER" site-registry.json | jq -c '.[]' | while IFS= read -r SITE; do
+          FAILED=0
+          while IFS= read -r SITE; do
             SITE_PATH_CODE=$(echo "$SITE" | jq -r '.site_path')
             SITE_NAME=$(echo "$SITE" | jq -r '.name')
             FULL_USER="${SSH_USER}_${SITE_PATH_CODE}"
@@ -68,21 +68,29 @@ jobs:
             echo "user: $FULL_USER"
             echo "path: $FULL_PATH"
 
-            rsync -avz --delete \
+            if rsync -avz --delete \
               -e "ssh -i ~/.ssh/deploy_key -p ${SSH_PORT} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
               --exclude='.git' \
               --exclude='.github' \
               --exclude='.gitignore' \
               --exclude='node_modules' \
               --exclude='site-registry.json' \
-              ./ "${FULL_USER}@${SSH_HOST}:${FULL_PATH}/wp-content/themes/${THEME_SLUG}/"
-
-            ssh -i ~/.ssh/deploy_key -p "${SSH_PORT}" \
-              -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-              "${FULL_USER}@${SSH_HOST}" \
-              "wp cache flush --path=${FULL_PATH} 2>&1 || true"
-
+              ./ "${FULL_USER}@${SSH_HOST}:${FULL_PATH}/wp-content/themes/${THEME_SLUG}/"; then
+              ssh -i ~/.ssh/deploy_key -p "${SSH_PORT}" \
+                -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+                "${FULL_USER}@${SSH_HOST}" \
+                "wp cache flush --path=${FULL_PATH} 2>&1 || true"
+              echo "✓ $SITE_NAME deployed"
+            else
+              echo "✗ $SITE_NAME FAILED"
+              FAILED=$((FAILED + 1))
+            fi
             echo "::endgroup::"
-          done
+          done < <(jq -c "$FILTER" site-registry.json | jq -c '.[]')
 
-          echo "All deployments complete"
+          echo ""
+          echo "=== Summary ==="
+          echo "Total: $COUNT, Failed: $FAILED"
+          if [ "$FAILED" -gt 0 ]; then
+            exit 1
+          fi

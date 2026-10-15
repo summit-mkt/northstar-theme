@@ -4,10 +4,75 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      priority:
+        description: 'Which priority tier to deploy (0-4, or "all")'
+        required: true
+        default: '0'
+        type: choice
+        options:
+          - 'all'
+          - '0'
+          - '1'
+          - '2'
+          - '3'
+          - '4'
 
 jobs:
-  deploy:
+  prepare:
     runs-on: ubuntu-latest
+    outputs:
+      sites: ${{ steps.filter.outputs.sites }}
+      count: ${{ steps.filter.outputs.count }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+
+      - name: Materialize site registry
+        run: |
+          cat << 'EOF' > site-registry.json
+          ${{ secrets.SITE_REGISTRY_JSON }}
+          EOF
+
+      - name: Debug registry
+        run: |
+          echo "Registry line count: $(wc -l < site-registry.json)"
+          echo "Total sites in registry: $(jq 'length' site-registry.json)"
+          echo "Sites with ssh_setup=Yes: $(jq '[.[] | select(.ssh_setup == "Yes")] | length' site-registry.json)"
+
+      - id: filter
+        run: |
+          PRIORITY="${{ github.event.inputs.priority || 'all' }}"
+          echo "Filtering for priority: $PRIORITY"
+
+          if [ "$PRIORITY" = "all" ]; then
+            FILTER='[.[] | select(.ssh_setup == "Yes" and .site_path != null)]'
+          else
+            FILTER="[.[] | select(.ssh_setup == \"Yes\" and .site_path != null and .priority == $PRIORITY)]"
+          fi
+
+          SITES=$(jq -c "$FILTER | map({
+            name: .name,
+            user: (\"${{ secrets.SSH_USER }}_\" + .site_path),
+            path: (\"${{ secrets.SITE_PATH }}/\" + .site_path + \"/public_html\")
+          })" site-registry.json)
+
+          COUNT=$(echo "$SITES" | jq 'length')
+
+          echo "sites=$SITES" >> $GITHUB_OUTPUT
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "Will deploy to $COUNT sites"
+          echo "$SITES" | jq '.'
+
+  deploy:
+    needs: prepare
+    if: ${{ needs.prepare.outputs.count != '0' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        site: ${{ fromJson(needs.prepare.outputs.sites) }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v7
@@ -20,17 +85,21 @@ jobs:
 
       - name: Deploy theme via rsync
         run: |
+          echo "Deploying to ${{ matrix.site.name }}"
+          echo "  user: ${{ matrix.site.user }}"
+          echo "  path: ${{ matrix.site.path }}"
           rsync -avz --delete \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             --exclude='.git' \
             --exclude='.github' \
             --exclude='.gitignore' \
             --exclude='node_modules' \
-            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SITE_PATH }}/wp-content/themes/${{ secrets.THEME_SLUG }}/
+            --exclude='site-registry.json' \
+            ./ ${{ matrix.site.user }}@${{ secrets.SSH_HOST }}:${{ matrix.site.path }}/wp-content/themes/${{ secrets.THEME_SLUG }}/
 
       - name: Flush WP cache
         run: |
           ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} \
             -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
-            "wp cache flush --path=${{ secrets.SITE_PATH }} 2>&1 || true"
+            ${{ matrix.site.user }}@${{ secrets.SSH_HOST }} \
+            "wp cache flush --path=${{ matrix.site.path }} 2>&1 || true"

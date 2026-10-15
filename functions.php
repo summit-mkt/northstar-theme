@@ -133,3 +133,23 @@ add_action( 'admin_init', function () {
         exit;
     }
 } );
+
+// Only do server-side validation, don't modify any HTML rendering
+function elementor_form_tel_field_validation( $field, $record, $ajax_handler ) {
+    // Remove Elementor's native validation (if it even exists)
+    $forms_module = \ElementorPro\Plugin::instance()->modules_manager->get_modules( 'forms' );
+    remove_action( 'elementor_pro/forms/validation/tel', [ $forms_module->fields_registrar->get( 'tel' ), 'validation' ], 10, 3 );
+    
+    // Empty values are ignored (let "required" handle it)
+    if ( empty( $field['value'] ) ) {
+        return;
+    }
+    
+    // Strip non-numeric characters, check if it's at least 10 digits
+    $digits = preg_replace( '/\D/', '', $field['value'] );
+    
+    if ( strlen( $digits ) < 10 ) {
+        $ajax_handler->add_error( $field['id'], 'Please enter a valid phone number (at least 10 digits).' );
+    }
+}
+add_action( 'elementor_pro/forms/validation/tel', 'elementor_form_tel_field_validation', 10, 3 );

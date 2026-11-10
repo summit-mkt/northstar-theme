@@ -4,7 +4,7 @@ Theme URI: https://github.com/summit-mkt/northstar-theme
 Description: Northstar Theme is a child theme of Hello Elementor, created by Summit Marketing team
 Author: Summit Marketing Team
 Template: hello-elementor
-Version: 2.0.9.3
+Version: 2.0.9.4
 Text Domain: hello-elementor-child
 License: GNU General Public License v3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -202,6 +202,7 @@ q::after {
   --space__v-cta: clamp(1.25rem, 1.0299rem + 0.939vw, 1.875rem);
   --space__h-cta: clamp(1.25rem, 1.0299rem + 0.939vw, 1.875rem); /*used on cta-padding | gap-m is also 1.25*/
   --space__col-gap: clamp(2rem, 1.2738rem + 3.0986vw, 4.0625rem); /* used on hero column gap temp-gap-2*/
+  --space__col-gap-sm: clamp(0.75rem, 0.1802rem + 1.1887vw, 1.25rem);
   --space__v-ben-card: clamp(1.875rem, 1.6549rem + 0.939vw, 2.5rem); /* Used on cta-padding ()*/
   --space__h-ben-card: clamp(0.625rem, 0.493rem + 0.5634vw, 1rem);
   --bleed-distance__flex-2-col: max(0px, calc((100vw - var(--container-max-width)) / 2));
@@ -219,7 +220,7 @@ h3 {
 }
 
 #hero {
-  min-height: 80vh;
+  min-height: min(715px, 80vh);
 
   & .flex-stack-mobile {
     row-gap: 0px;

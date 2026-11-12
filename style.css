@@ -4,7 +4,7 @@ Theme URI: https://github.com/summit-mkt/northstar-theme
 Description: Northstar Theme is a child theme of Hello Elementor, created by Summit Marketing team
 Author: Summit Marketing Team
 Template: hello-elementor
-Version: 2.0.9.4
+Version: 2.0.9.5
 Text Domain: hello-elementor-child
 License: GNU General Public License v3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -231,25 +231,31 @@ p, li {
   font-size: var(--txt-size__base);
 }
 
-.li-atomic > p {
+.e-list-item.e-list-item-base > .e-list-item__marker {
+  background-color: black;
+  transition: background-color 0.2s ease;
 
-  &::before {
-    content: "";
-    background-image: url("assets/images/icon/circle-check-regular.svg");
-    background-size: contain;
-    display: inline-block;
-    width: 1rem;
-    height: 1rem;
-    position: relative;
-    top: 0.1rem;
-    bottom: 0.1rem;
-    margin-right: 0.5rem;
-    color: black;
+  /* SVG mask */
+  -webkit-mask-image: url('/wp-content/uploads/2026/11/circle-check-regular.svg');
+  mask-image: url('/wp-content/uploads/2026/11/circle-check-regular.svg');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+
+  width: 1rem;
+  height: 1rem;
+
+  /* Hide the built-in SVG Elementor renders in the marker */
+  > .e-svg-base {
+    display: none;
   }
 }
 
-.li-atomic:hover > p::before {
-  color: var(--Primary);
+.e-list-item.e-list-item-base:hover > .e-list-item__marker {
+  background-color: var(--secondary);
 }
 
 /* 

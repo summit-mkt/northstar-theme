@@ -4,7 +4,7 @@ Theme URI: https://github.com/summit-mkt/northstar-theme
 Description: Northstar Theme is a child theme of Hello Elementor, created by Summit Marketing team
 Author: Summit Marketing Team
 Template: hello-elementor
-Version: 2.0.9.5.1
+Version: 2.0.9.5.2
 Text Domain: hello-elementor-child
 License: GNU General Public License v3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -379,4 +379,50 @@ input[type="checkbox"], input[type="radio"] {
     transform: translate(-50%, -50%) rotate(45deg);
   }
 
+}
+
+/* Bleed Grid */
+
+:root{
+  --grid-inner__cols: 10;
+  --maximum-width: 1440px;
+  --measure-gutter__h-md: calc(max(0px, (100vw - var(--maximum-width))) / 2 + var(--space__h-lg));
+  --measure-inner__h-md:  calc(min(var(--maximum-width), 100vw) - 2 * var(--space__h-lg));
+}
+
+.grdbldcnt {
+  display: grid;
+  width: 100%;
+  max-width: var(--maximum-width);
+  position: relative;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+  padding: 0;
+  margin: 0;
+  column-gap: 0;
+  row-gap: 0;
+  grid-template-columns: 
+    var(--measure-gutter__h-md)
+    repeat(10, calc(var(--measure-inner__h-md) / 10))
+    var(--measure-gutter__h-md);
+}
+
+.hrlft {
+  grid-column: 2 / 7;         /* cols 2–6 = first 5 inner cols = left half of content box */
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding-inline-end: 2rem;   /* half the 4rem gap */
+  /* your existing: gap, align-items, etc. */
+}
+
+.hrgt {
+  grid-column: 7 / 13;        /* cols 7–12 = last 5 inner cols + right gutter → bleeds right */
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding-inline-start: 2rem; /* half the 4rem gap */
 }

@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'HELLO_ELEMENTOR_CHILD_VERSION', '2.0.9.5.4' );
+define( 'HELLO_ELEMENTOR_CHILD_VERSION', '2.0.9.5.5' );
 
 /**
  * Load child theme scripts & styles.

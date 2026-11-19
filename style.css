@@ -4,7 +4,7 @@ Theme URI: https://github.com/summit-mkt/northstar-theme
 Description: Northstar Theme is a child theme of Hello Elementor, created by Summit Marketing team
 Author: Summit Marketing Team
 Template: hello-elementor
-Version: 2.0.9.5.4
+Version: 2.0.9.5.5
 Text Domain: hello-elementor-child
 License: GNU General Public License v3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -442,7 +442,6 @@ input[type="checkbox"], input[type="radio"] {
 @media (min-width: 768px) and (max-width: 1023.99px) {
 
   :root {
-    /* reintroduce the symmetric side gutter at tablet */
     --measure-gutter__h-md: max(var(--space__h-lg), (100vw - var(--maximum-width)) / 2);
     --measure-inner__h-md:  min(var(--maximum-width), calc(100vw - 2 * var(--space__h-lg)));
   }
@@ -454,18 +453,14 @@ input[type="checkbox"], input[type="radio"] {
       var(--measure-gutter__h-md);
   }
 
-  /* each child spans the full inner content width */
   .grid-col__lay-l,
-  .grid-col__lay-r {
-    grid-column: 2 / 12;   /* full inner content box, no bleed */
+  .grid-col__bleed-l {
+    grid-column: 1 / 7;  
   }
 
-  /* bleed variants also span the matching outer gutter → full viewport width */
-  .grid-col__bleed-l {
-    grid-column: 1 / 12;   /* left gutter + full inner */
-  }
+  .grid-col__lay-r,  
   .grid-col__bleed-r {
-    grid-column: 2 / 13;   /* full inner + right gutter */
+    grid-column: 7 / 13;   /* full inner + right gutter */
   }
 }
 

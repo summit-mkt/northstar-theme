@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'HELLO_ELEMENTOR_CHILD_VERSION', '2.0.9.5.3' );
+define( 'HELLO_ELEMENTOR_CHILD_VERSION', '2.0.9.5.4' );
 
 /**
  * Load child theme scripts & styles.
@@ -80,10 +80,16 @@ function location_years_shortcode() {
 }
 add_shortcode('location_years', 'location_years_shortcode');
 
+function location_title_shortcode() {
+    return get_field('title', 'option');
+}
+add_shortcode('title', 'location_title_shortcode');
+
 // Create shortcode [location_name]
 function location_name_shortcode() {
     return get_field('option_location_name', 'option');
 }
+
 add_shortcode('location_name', 'location_name_shortcode');
 
 // Create shortcode [brand_video]

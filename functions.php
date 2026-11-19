@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'HELLO_ELEMENTOR_CHILD_VERSION', '2.0.9.5.5' );
+define( 'HELLO_ELEMENTOR_CHILD_VERSION', '2.0.9.5.6' );
 
 /**
  * Load child theme scripts & styles.
@@ -74,7 +74,7 @@ add_action('wp_head', 'ns_meta_tags');
 
 // Create shortcode [location_years]
 function location_years_shortcode() {
-	$established = get_field('brand_established', 'option');
+	$established = get_field('year', 'option');
 	$years = date('Y')-$established;
     return $years;
 }

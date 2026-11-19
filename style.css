@@ -4,7 +4,7 @@ Theme URI: https://github.com/summit-mkt/northstar-theme
 Description: Northstar Theme is a child theme of Hello Elementor, created by Summit Marketing team
 Author: Summit Marketing Team
 Template: hello-elementor
-Version: 2.0.9.5.5
+Version: 2.0.9.5.6
 Text Domain: hello-elementor-child
 License: GNU General Public License v3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -387,6 +387,24 @@ input[type="checkbox"], input[type="radio"] {
 
 }
 
+#brand__media-container video {
+  object-position: bottom right;
+}
+
+
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  #closer {
+    background-position: 0% 0%, 65% 50%;
+  }
+}
+
+@media (max-width: 767.99px) {
+  #closer {
+    background-image: none;
+  }
+}
+
+
 /* ==========================================================================
    Bleed Grid — mobile-first
    ========================================================================== */
@@ -439,7 +457,7 @@ input[type="checkbox"], input[type="radio"] {
    The bleed-l column additionally eats the left gutter (1/…).
    -------------------------------------------------------------------------- */
 
-@media (min-width: 768px) and (max-width: 1023.99px) {
+@media (min-width: 768px) and (max-width: 1023.98px) {
 
   :root {
     --measure-gutter__h-md: max(var(--space__h-lg), (100vw - var(--maximum-width)) / 2);

@@ -4,7 +4,7 @@ Theme URI: https://github.com/summit-mkt/northstar-theme
 Description: Northstar Theme is a child theme of Hello Elementor, created by Summit Marketing team
 Author: Summit Marketing Team
 Template: hello-elementor
-Version: 2.0.9.5.7
+Version: 2.0.9.5.8
 Text Domain: hello-elementor-child
 License: GNU General Public License v3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -532,11 +532,11 @@ input[type="checkbox"], input[type="radio"] {
   container: detail-columns / inline-size;
 }
 
-@container detail-columns (766px < max-width <= 1214px ) {
+@container detail-columns (766px < width <= 1214px ) {
     img {
-        flex: 3;
+        flex: 4 !important;
     }
     .flex-col__content {
-        flex: 5;
+        flex: 6 !important;
     }
 }
